@@ -1,0 +1,5 @@
+if(EXISTS "/Users/jeremyperrin/Documents/FAC/3eme_Annee_CMI_Informatique/semestre_6/PMP/parser/build/testParser[1]_tests.cmake")
+  include("/Users/jeremyperrin/Documents/FAC/3eme_Annee_CMI_Informatique/semestre_6/PMP/parser/build/testParser[1]_tests.cmake")
+else()
+  add_test(testParser_NOT_BUILT testParser_NOT_BUILT)
+endif()
