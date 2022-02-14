@@ -97,9 +97,47 @@ namespace op {
 
   }
 
-  void Parser::printHelp(std::ostream& stream) const {
-    // TODO: not yet implemented
+  void Parser::printOptionInformation(op::Option& option, std::ostream& stream){
+    if(option.expectValue()){
+      stream<<" value";
+    }
+    std::string defaultValue = option.getValue();
+    if(defaultValue!=""){
+      stream<<" (default "<<defaultValue;
+    }
+    if(option.isMandatory()){
+      stream<<" MANDATORY";
+    }
   }
+
+  void Parser::printHelp(std::ostream& stream) const {
+    stream<<"Usage :"<<std::endl;
+    for(auto option : this->options){
+      std::vector<std::string> names = option.getNames();
+      bool unique = true;
+      stream<<"\t";
+      for(auto name : names){
+        if(name.size()==1){
+          if(!unique){
+            stream<<"|";
+          }
+          stream<<"-"<<name;
+          printOptionInformation(option,stream);
+        }
+        else{
+          if(!unique){
+            stream<<"|";
+          }
+          stream<<"--"<<name;
+          printOptionInformation(option,stream);
+        }
+        unique = false;
+      }
+      stream<<std::endl;
+    }
+    stream<<"\t--help|-h"<<std::endl;
+  }
+
 
   std::size_t Parser::getPositionalArgumentCount() const {
     return this->PositionalArgument.size();

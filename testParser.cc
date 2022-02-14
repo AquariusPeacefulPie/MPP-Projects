@@ -20,9 +20,10 @@ fakeArgv[5] = "pos2";
 
 
 
-parser("option").hasValue().setDefaultValue("foo");
+parser("option").hasValue().setDefaultValue("foo").setMandatory();
 parser("alias").addAlias("a");
 std::cout << parser("option").getValue() << std::endl;
+parser.printHelp();
 parser.parseCommandLine(fakeArgc , fakeArgv);
 std::cout << "nb ArgumentPositional : " << parser.getPositionalArgumentCount() << std::endl;
 std::cout << parser("option").getValue() << std::endl;
