@@ -16,14 +16,18 @@ namespace op {
   }
 
   const std::string& Option::getValue() const {
-      return this->value;
+    if(this->value == "")
+          throw std::runtime_error("No value expected");
+
+    return this->value;
   }
 
   bool Option::expectValue() const {
     return this->expectedValue;
   }
-
+  //A changer
   Option& Option::setDefaultValue(const std::string& value) {
+    this->expectedValue = true;
     if(Option::expectValue()){
       this->value = value;
     }else{
@@ -77,8 +81,13 @@ namespace op {
   }
 
   Option& Option::operator=(const std::string& value) {
+    if(expectedValue){
     this->value = value;
     return *this;
+    }else{
+      throw std::runtime_error("No value expected");
+    }
+
   }
 
   Option::operator bool() const {
