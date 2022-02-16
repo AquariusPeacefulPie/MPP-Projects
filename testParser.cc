@@ -112,17 +112,6 @@ TEST(parseCommandLine,optionEmptyName){
   EXPECT_THROW(parser.parseCommandLine(testArgc,testArgv),std::runtime_error);
 }
 
-TEST(parseCommandLine,optionDoesntExists){
-  op::Parser parser;
-
-  char *testArgv[2];
-  int testArgc = 2;
-  testArgv[0] = "command";
-  testArgv[1] = "--nonExistingOption";
-
-  EXPECT_THROW(parser.parseCommandLine(testArgc,testArgv),std::runtime_error);
-}
-
 /* Test the writing of the option names */
 
 TEST(parseCommandLine,optionNameOneDashCorrect){
@@ -281,7 +270,10 @@ TEST(parseCommandLine,sameOptionMultipleTimesDifferentPlacesSavesLastValue){
 TEST(parseCommandLine,correctNumberPositionalArguments){
   op::Parser parser;
 
+  parser("option").hasValue();
+  parser("a");
   parser("option");
+
 
   char *testArgv[6];
   int testArgc = 6;
@@ -323,6 +315,19 @@ TEST(parseCommandLine,helpCallCommandAlias){
   EXPECT_THROW(parser.parseCommandLine(testArgc,testArgv),std::runtime_error);
 }
 
+TEST(parseCommandLine,helpCallExpectExit){
+  op::Parser parser;
+
+  parser("help");
+
+  char *testArgv[2];
+  int testArgc = 2;
+  testArgv[0] = "command";
+  testArgv[1] = "--help";
+  
+  EXPECT_EXIT(parser.parseCommandLine(testArgc,testArgv),::testing::ExitedWithCode(EXIT_FAILURE),"");
+}
+
 TEST(parseCommandLine,optionUndefinedOneDash){
   op::Parser parser;
 
@@ -345,18 +350,6 @@ TEST(parseCommandLine,optionUndefinedDoubleDash){
   EXPECT_THROW(parser.parseCommandLine(testArgc,testArgv),std::runtime_error);
 }
 
-TEST(parseCommandLine,helpCallExpectExit){
-  op::Parser parser;
-
-  parser("option");
-
-  char *testArgv[2];
-  int testArgc = 2;
-  testArgv[0] = "command";
-  testArgv[1] = "--help";
-  
-  EXPECT_EXIT(parser.parseCommandLine(testArgc,testArgv),::testing::ExitedWithCode(EXIT_FAILURE),"");
-}
 
 
 
