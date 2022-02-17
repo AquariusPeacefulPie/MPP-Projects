@@ -131,11 +131,12 @@ namespace op {
   void Parser::printOptionInformation(op::Option& option, std::ostream& stream){
     if(option.expectValue()){
       stream<<" value";
+      std::string defaultValue = option.getValue();
+      if(defaultValue!=""){
+        stream<<" (default "<<defaultValue;
+      }
     }
-    std::string defaultValue = option.getValue();
-    if(defaultValue!=""){
-      stream<<" (default "<<defaultValue;
-    }
+   
     if(option.isMandatory()){
       stream<<" MANDATORY";
     }

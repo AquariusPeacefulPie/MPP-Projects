@@ -5,31 +5,6 @@
 
 
 
-
-TEST(isValid, avoir) {
-  op::Parser parser;
-
-  char *fakeArgv[6];
-  int fakeArgc = 6;
-  fakeArgv[0] = "command";
-  fakeArgv[1] = "--option";
-  fakeArgv[2] = "bar";
-  fakeArgv[3] = "-a";
-  fakeArgv[4] = "pos1";
-  fakeArgv[5] = "pos2";
-
-
-
-  parser("option").hasValue().setDefaultValue("foo");
-  parser("alias").addAlias("a");
-  std::cout<<parser("option").getValue()<<std::endl;
-  parser.printHelp();
-  parser.parseCommandLine(fakeArgc , fakeArgv);
-  std::cout<<"nb ArgumentPositional : "<<parser.getPositionalArgumentCount()<<std::endl;
-  std::cout<<parser("option").getValue()<<std::endl;
-  EXPECT_EQ(parser.getPositionalArgumentCount(),2);
-}
-
 TEST(parseCommandLine,optionMandatoryIsHere){
   op::Parser parser;
 
@@ -288,32 +263,6 @@ TEST(parseCommandLine,correctNumberPositionalArguments){
   EXPECT_EQ(parser.getPositionalArgumentCount(),2);
 }
 
-TEST(parseCommandLine,helpCallCommand){
-  op::Parser parser;
-
-  parser("help");
-
-  char *testArgv[2];
-  int testArgc = 2;
-  testArgv[0] = "command";
-  testArgv[1] = "--help";
-
-
-  EXPECT_THROW(parser.parseCommandLine(testArgc,testArgv),std::runtime_error);
-}
-
-TEST(parseCommandLine,helpCallCommandAlias){
-  op::Parser parser;
-
-  parser("h");
-
-  char *testArgv[2];
-  int testArgc = 2;
-  testArgv[0] = "command";
-  testArgv[1] = "-h";
-  
-  EXPECT_THROW(parser.parseCommandLine(testArgc,testArgv),std::runtime_error);
-}
 
 TEST(parseCommandLine,helpCallExpectExit){
   op::Parser parser;
@@ -348,6 +297,52 @@ TEST(parseCommandLine,optionUndefinedDoubleDash){
   testArgv[1] = "--undefined";
   
   EXPECT_THROW(parser.parseCommandLine(testArgc,testArgv),std::runtime_error);
+}
+
+
+
+TEST(parseCommandLine,optionCorrectValueExpected){
+  op::Parser parser;
+
+  parser("option").hasValue();
+
+  char *testArgv[3];
+  int testArgc = 3;
+  testArgv[0] = "command";
+  testArgv[1] = "--option";
+  testArgv[2] = "foo";
+  
+  EXPECT_NO_THROW(parser.parseCommandLine(testArgc,testArgv));
+  EXPECT_EQ(parser("option").getValue(),"foo");
+}
+
+TEST(parseCommandLine,optionDefaultValueAccepted){
+  op::Parser parser;
+
+  parser("option").hasValue().setDefaultValue("foo");
+
+  char *testArgv[2];
+  int testArgc = 2;
+  testArgv[0] = "command";
+  testArgv[1] = "--option";
+  
+  EXPECT_NO_THROW(parser.parseCommandLine(testArgc,testArgv));
+  EXPECT_EQ(parser("option").getValue(),"foo");
+}
+
+TEST(parseCommandLine,optionValueInsteadOfDefaultValue){
+  op::Parser parser;
+
+  parser("option").hasValue().setDefaultValue("foo");
+
+  char *testArgv[3];
+  int testArgc = 3;
+  testArgv[0] = "command";
+  testArgv[1] = "--option";
+  testArgv[2] = "foo2";
+  
+  EXPECT_NO_THROW(parser.parseCommandLine(testArgc,testArgv));
+  EXPECT_EQ(parser("option").getValue(),"foo2");
 }
 
 
