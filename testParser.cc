@@ -345,7 +345,147 @@ TEST(parseCommandLine,optionValueInsteadOfDefaultValue){
   EXPECT_EQ(parser("option").getValue(),"foo2");
 }
 
+TEST(Option, Name) {
+  op::Option opt("nemo");
+  std::vector<std::string> names;
+  names.push_back("nemo");
+  EXPECT_EQ(opt.getNames(),names);
+}
 
+TEST(Option, NameAndAlias) {
+  op::Option opt("nemo");
+  opt.addAlias("cars");
+  std::vector<std::string> names;
+  names.push_back("nemo");
+  names.push_back("cars");
+  int cpt = 0;
+  for(auto name : names){
+    for(auto optName : opt.getNames()){
+      if( name == optName){
+        EXPECT_EQ(name,optName);
+        cpt++;
+      }
+    }
+  } 
+
+
+  EXPECT_EQ(opt.getNames().size(),cpt);
+}
+
+TEST(Option, NameAndManyAlias) {
+  op::Option opt("nemo");
+  opt.addAlias("cars");
+  opt.addAlias("sutom");
+
+  std::vector<std::string> names;
+  names.push_back("nemo");
+  names.push_back("cars");
+  names.push_back("sutom");
+
+  int cpt = 0;
+  for(auto name : names){
+    for(auto optName : opt.getNames()){
+      if( name == optName){
+        EXPECT_EQ(name,optName);
+        cpt++;
+      }
+    }
+  } 
+  EXPECT_EQ(opt.getNames().size(),cpt);
+}
+
+TEST(Option, NameAndDuplicateAlias) {
+  op::Option opt("nemo");
+  opt.addAlias("cars");
+  opt.addAlias("cars");
+
+  std::vector<std::string> names;
+  names.push_back("nemo");
+  names.push_back("cars");
+
+  int cpt = 0;
+  for(auto name : names){
+    for(auto optName : opt.getNames()){
+      if( name == optName){
+        EXPECT_EQ(name,optName);
+        cpt++;
+      }
+    }
+  } 
+  EXPECT_EQ(opt.getNames().size(),cpt);
+  EXPECT_FALSE(opt.getNames().size() == 3);
+
+}
+
+
+TEST(Option,hasValueWithNoExpectedValue){
+  op::Option opt("nemo");
+  opt.hasValue();
+  EXPECT_TRUE(opt.expectValue());
+}
+
+TEST(Option,hasValueWithAlreadyExpectedValue){
+  op::Option opt("nemo");
+  opt.hasValue();
+  opt.hasValue();
+  EXPECT_TRUE(opt.expectValue());
+}
+
+TEST(Option,getValueWithDefaultValue){
+  op::Option opt("nemo");
+  opt.hasValue();
+  opt.setDefaultValue("foo");
+  EXPECT_EQ(opt.getValue(),"foo");
+
+}
+
+TEST(Option,setDefaultValueWithoutexpectedValue){
+  op::Option opt("nemo");
+  EXPECT_NO_THROW(opt.setDefaultValue("foo"));
+}
+
+TEST(Option,NoMandatory){
+  op::Option opt("nemo");
+  EXPECT_FALSE(opt.isMandatory());
+}
+
+TEST(Option,setMandatory){
+  op::Option opt("nemo");
+  opt.setMandatory();
+  EXPECT_TRUE(opt.isMandatory());
+}
+
+
+TEST(Option,parsed){
+  op::Option opt("nemo");
+  opt.parsed();
+  EXPECT_TRUE((opt));
+}
+
+TEST(Option,notParsed){
+  op::Option opt("nemo");
+  EXPECT_FALSE((opt));
+}
+
+TEST(Option,operatorEqualTrue){
+  op::Option opt("nemo");
+  EXPECT_TRUE(opt == "nemo");
+}
+
+TEST(Option,operatorEqualFalse){
+  op::Option opt("nemo");
+  EXPECT_FALSE(opt == "not");
+}
+
+TEST(Option,operatorNotEqualFalse){
+  op::Option opt("nemo");
+  EXPECT_FALSE(opt != "nemo");
+}
+
+TEST(Option,operatorNotEqualTrue){
+  op::Option opt("nemo");
+  EXPECT_TRUE(opt != "not");
+}
 
 
 int main(int argc, char* argv[]) {
