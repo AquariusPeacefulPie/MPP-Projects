@@ -10,7 +10,7 @@ TEST(parseCommandLine,optionMandatoryIsHere){
 
   parser("option").setMandatory();
 
-  char *testArgv[2];
+  char const *testArgv[2];
   int testArgc = 2;
   testArgv[0] = "command";
   testArgv[1] = "--option";
@@ -23,7 +23,7 @@ TEST(parseCommandLine,optionMandatoryIsNotHere){
 
   parser("option").setMandatory();
 
-  char *testArgv[2];
+  char const *testArgv[2];
   int testArgc = 2;
   testArgv[0] = "command";
   testArgv[1] = "--alias";
@@ -37,7 +37,7 @@ TEST(parseCommandLine,optionExpectValueHasValue){
 
   parser("option").hasValue();
 
-  char *testArgv[3];
+  char const *testArgv[3];
   int testArgc = 3;
   testArgv[0] = "command";
   testArgv[1] = "--option";
@@ -52,7 +52,7 @@ TEST(parseCommandLine,optionExpectValueHasNoValue){
 
   parser("option").hasValue();
 
-  char *testArgv[2];
+  char const *testArgv[2];
   int testArgc = 2;
   testArgv[0] = "command";
   testArgv[1] = "--option";
@@ -66,7 +66,7 @@ TEST(parseCommandLine,emptyInsteadExpectedValue){
 
   parser("option").hasValue();
 
-  char *testArgv[3];
+  char const *testArgv[3];
   int testArgc = 3;
   testArgv[0] = "command";
   testArgv[1] = "--option";
@@ -79,7 +79,7 @@ TEST(parseCommandLine,emptyInsteadExpectedValue){
 TEST(parseCommandLine,optionEmptyName){
   op::Parser parser;
 
-  char *testArgv[2];
+  char const *testArgv[2];
   int testArgc = 2;
   testArgv[0] = "command";
   testArgv[1] = "";
@@ -94,7 +94,7 @@ TEST(parseCommandLine,optionNameOneDashCorrect){
 
   parser("o");
 
-  char *testArgv[2];
+  char const *testArgv[2];
   int testArgc = 2;
   testArgv[0] = "command";
   testArgv[1] = "-o";
@@ -107,7 +107,7 @@ TEST(parseCommandLine,optionNameOneDashIncorrect){
 
   parser("oo");
 
-  char *testArgv[2];
+  char const *testArgv[2];
   int testArgc = 2;
   testArgv[0] = "command";
   testArgv[1] = "-oo";
@@ -120,7 +120,7 @@ TEST(parseCommandLine,optionNameDoubleDashCorrect){
 
   parser("option");
 
-  char *testArgv[2];
+  char const *testArgv[2];
   int testArgc = 2;
   testArgv[0] = "command";
   testArgv[1] = "--option";
@@ -133,7 +133,7 @@ TEST(parseCommandLine,optionNameDoubleDashIncorrect){
 
   parser("o");
 
-  char *testArgv[2];
+  char const *testArgv[2];
   int testArgc = 2;
   testArgv[0] = "command";
   testArgv[1] = "--o";
@@ -148,7 +148,7 @@ TEST(parseCommandLine,positionalArgumentsAtTheEnd){
 
   parser("f");
 
-  char *testArgv[4];
+  char const *testArgv[4];
   int testArgc = 4;
   testArgv[0] = "cp";
   testArgv[1] = "-f";
@@ -163,7 +163,7 @@ TEST(parseCommandLine,positionalArgumentsFirst){
 
   parser("f");
 
-  char *testArgv[4];
+  char const *testArgv[4];
   int testArgc = 4;
   testArgv[0] = "cp";
   testArgv[1] = "source";
@@ -179,7 +179,7 @@ TEST(parseCommandLine,positionalArgumentsBetweenOptions){
   parser("f");
   parser("n");
 
-  char *testArgv[5];
+  char const *testArgv[5];
   int testArgc = 5;
   testArgv[0] = "cp";
   testArgv[1] = "-n";
@@ -195,7 +195,7 @@ TEST(parseCommandLine,sameOptionMultipleTimes){
 
   parser("option");
 
-  char *testArgv[3];
+  char const *testArgv[3];
   int testArgc = 3;
   testArgv[0] = "cp";
   testArgv[1] = "--option";
@@ -209,7 +209,7 @@ TEST(parseCommandLine,sameOptionMultipleTimesSavesLastValue){
 
   parser("option").hasValue();
 
-  char *testArgv[5];
+  char const *testArgv[5];
   int testArgc = 5;
   testArgv[0] = "command";
   testArgv[1] = "--option";
@@ -228,7 +228,7 @@ TEST(parseCommandLine,sameOptionMultipleTimesDifferentPlacesSavesLastValue){
   parser("option2");
 
 
-  char *testArgv[7];
+  char const *testArgv[7];
   int testArgc = 7;
   testArgv[0] = "command";
   testArgv[1] = "--option";
@@ -250,17 +250,18 @@ TEST(parseCommandLine,correctNumberPositionalArguments){
   parser("option");
 
 
-  char *testArgv[6];
+  char const *testArgv[6];
   int testArgc = 6;
+  size_t PositionalArgumentCount = 2;
   testArgv[0] = "cp";
   testArgv[1] = "--option";
   testArgv[2] = "bar";
   testArgv[3] = "-a";
   testArgv[4] = "pos1";
   testArgv[5] = "pos2";
-
+  
   EXPECT_NO_THROW(parser.parseCommandLine(testArgc,testArgv));
-  EXPECT_EQ(parser.getPositionalArgumentCount(),2);
+  EXPECT_EQ(parser.getPositionalArgumentCount(),PositionalArgumentCount);
 }
 
 
@@ -269,7 +270,7 @@ TEST(parseCommandLine,helpCallExpectExit){
 
   parser("help");
 
-  char *testArgv[2];
+  char const *testArgv[2];
   int testArgc = 2;
   testArgv[0] = "command";
   testArgv[1] = "--help";
@@ -280,7 +281,7 @@ TEST(parseCommandLine,helpCallExpectExit){
 TEST(parseCommandLine,optionUndefinedOneDash){
   op::Parser parser;
 
-  char *testArgv[2];
+  char const *testArgv[2];
   int testArgc = 2;
   testArgv[0] = "command";
   testArgv[1] = "-u";
@@ -291,7 +292,7 @@ TEST(parseCommandLine,optionUndefinedOneDash){
 TEST(parseCommandLine,optionUndefinedDoubleDash){
   op::Parser parser;
 
-  char *testArgv[2];
+  char const *testArgv[2];
   int testArgc = 2;
   testArgv[0] = "command";
   testArgv[1] = "--undefined";
@@ -306,7 +307,7 @@ TEST(parseCommandLine,optionCorrectValueExpected){
 
   parser("option").hasValue();
 
-  char *testArgv[3];
+  char const *testArgv[3];
   int testArgc = 3;
   testArgv[0] = "command";
   testArgv[1] = "--option";
@@ -321,7 +322,7 @@ TEST(parseCommandLine,optionDefaultValueAccepted){
 
   parser("option").hasValue().setDefaultValue("foo");
 
-  char *testArgv[2];
+  char const *testArgv[2];
   int testArgc = 2;
   testArgv[0] = "command";
   testArgv[1] = "--option";
@@ -335,7 +336,7 @@ TEST(parseCommandLine,optionValueInsteadOfDefaultValue){
 
   parser("option").hasValue().setDefaultValue("foo");
 
-  char *testArgv[3];
+  char const *testArgv[3];
   int testArgc = 3;
   testArgv[0] = "command";
   testArgv[1] = "--option";
@@ -352,13 +353,14 @@ TEST(Option, Name) {
   EXPECT_EQ(opt.getNames(),names);
 }
 
+
 TEST(Option, NameAndAlias) {
   op::Option opt("nemo");
   opt.addAlias("cars");
   std::vector<std::string> names;
   names.push_back("nemo");
   names.push_back("cars");
-  int cpt = 0;
+  size_t cpt = 0;
   for(auto name : names){
     for(auto optName : opt.getNames()){
       if( name == optName){
@@ -382,7 +384,7 @@ TEST(Option, NameAndManyAlias) {
   names.push_back("cars");
   names.push_back("sutom");
 
-  int cpt = 0;
+  size_t cpt = 0;
   for(auto name : names){
     for(auto optName : opt.getNames()){
       if( name == optName){
@@ -403,7 +405,7 @@ TEST(Option, NameAndDuplicateAlias) {
   names.push_back("nemo");
   names.push_back("cars");
 
-  int cpt = 0;
+  size_t cpt = 0;
   for(auto name : names){
     for(auto optName : opt.getNames()){
       if( name == optName){

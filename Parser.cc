@@ -1,46 +1,59 @@
 #include "Parser.h"
-
 #include <algorithm>
 #include <stdexcept>
-//RAjouter verif tiret avec plein de lettre
+
 namespace op {
+
+  std::string Parser::checkOptionFormat(std::string optionName) {
+    optionName = optionName.substr(1);
+    if(optionName[0] == '-'){
+      //Case option with two dot
+      optionName = optionName.substr(1);
+      if(optionName.size() == 1 ){
+        throw std::runtime_error("Option with bad format");
+      }          
+    }else{
+      //Case option with one dot
+      if(optionName.size() != 1){
+        throw std::runtime_error("Option with bad format");
+      }
+    }
+
+    if(optionName.size() == 0){
+      throw std::runtime_error("Empty option");
+    }
+
+    return optionName;
+  }
+
   void Parser::parseCommandLine(int argc, const char* const argv[]) {
-    // std::vector<std::string> PositionalArgumentTemp;
     std::string name;
     op::Option static * lastOption;
-    // bool expectedValue = false;
-    bool currentIsOption = false;
     bool lastIsOption = false;
     bool findTheOption = false;
 
-    std::string previousIsOption = ""; 
-    //On skip le premier elements qui est la command
     for(auto i = 1 ; i < argc ; i++){
 
-
       name = argv[i];
-
+      if(name.size() == 0){
+        throw std::runtime_error("Empty argument");
+      }
 
       if(lastIsOption && (*lastOption).expectValue()){
         *lastOption = name;
         lastIsOption = false;
       }else{
-
+        //Current argument of argv is an option
         if(name[0] == '-') {
-          name = name.substr(1);
-          if(name[0] == '-'){
-            name = name.substr(1);          
-          }
+          name = checkOptionFormat(name);
           if(name == "help" || name == "h"){
             printHelp(std::cout);
           }
-          if(name.size() == 0){
-            throw std::runtime_error("Le nom de l'option est vide");
-          }
+
           for(auto &option : options){
             if(option == name){
               if( (i == argc - 1) && option.expectValue() && option.getValue() == "" ){
-                throw std::runtime_error("Cette option attend une valeur");
+                throw std::runtime_error("Option expects a value");
               }              
               option.parsed();
               findTheOption = true;
@@ -48,83 +61,21 @@ namespace op {
               lastIsOption = true;
             }
           }
+          
           if(!findTheOption){
-            throw std::runtime_error("Cette option n'existe pas ");
+            throw std::runtime_error("Option doesn't exist");
           }
           findTheOption = false;
         }else{
           this->PositionalArgument.push_back(name);
         }
-
-
       }
-
-
-      // if(!currentIsOption){
-      //     std::cout << "Pas une option \n";
-      //   if( lastIsOption && (*lastOption).expectValue()){
-      //             std::cout << "debug \n";
-      //      *lastOption=name;
-      //   }else{
-      //     PositionalArgumentTemp.push_back(name);
-      //   }
-
-
-      //    lastIsOption = false;
-      // //CURRENT EST UNE OPTION
-      // }else{
-
-      //   // if(isTheEnd){
-      //   //   PositionalArgumentTemp.clear();
-      //   //   isTheEnd = false;
-      //   // }
-
-      //   if( lastIsOption  ){
-      //     if((lastOption->getValue() == "") && lastOption->expectValue()){
-      //       throw std::runtime_error("Cette option attend une valeur");
-      //     }
-      //     // std::cout<< "alors lal allalal \n" ;
-      //     //PROBLEME L'OPTION PRECEDENTE N'A PAS DE VALEUR
-      //   }
-
-        
-      //     if(name[0] == '-'){
-      //       // if(name.size() == 1){
-      //       //   throw std::runtime_error("Le nom de l'option est vide");
-      //       // }
-      //       name = name.substr(1);
-      //     //POUR LES ALIAS
-      //     }
-
-      //     if(name.size() == 0){
-      //       throw std::runtime_error("Le nom de l'option est vide");
-      //     }          
-
-      //   for(auto &option : options){
-      //     if(option == name){
-      //       option.parsed();
-      //       findTheOption = true;
-      //       lastOption = &option;
-      //       std::cout<< "yoyooyoy : "<<lastOption->getNames().front() << "\n" ;
-      //       lastIsOption = true;
-      //     }
-      //   }
-      //   if(!findTheOption){
-      //     throw std::runtime_error("Cette option n'existe pas ");
-      //   }
-      //   findTheOption = false;
-
-      // }
-
-
     }
-    // this->PositionalArgument = PositionalArgumentTemp;
     for(auto option : options){
       if(option.isMandatory() && !(option) ){
-        throw std::runtime_error("option obligatoire non mise");
+        throw std::runtime_error("Mandatory option not present");
       }
     }    
-    //Verifier si il y a des options obligatoire non lue
 
   }
 
