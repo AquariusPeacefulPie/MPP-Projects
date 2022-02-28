@@ -3,44 +3,46 @@
 
 namespace t {
 
-  template</* implementation defined */>
+  template<typename T, typename ... Other>
   class Tuple {
   public:
     /**
      * Default constructor
      */
-    Tuple() {
+    Tuple() = default;
 
-    }
 
     /**
      * Constructor to initialize values
      */
-    Tuple(/* implementation defined */) {
-
+    Tuple(T firstValue, Other ... otherValue):value(firstValue),rightMember(otherValue ...)   
+    {
     }
 
     /**
      * Value getter
      */
     template<int index>
-    /* implementation defined */ get() {
-
+    T get() {
+      if( index != 0){
+        return rightMember.get(index - 1);
+      }
+      return this->value;
     }
 
     /**
      * Addition between to tuples
      */
     template <typename OtherType, typename ... OtherTypes>
-    Tuple</* implementation defined */> operator+(const Tuple<OtherType, OtherTypes...>& other) {
+    Tuple<T,Other> operator+(const Tuple<OtherType, OtherTypes...>& other) {
 
     }
 
     /**
-     * Addition between to tuples - in place
+     * Addition between two tuples - in place
      */
     template <typename ... OtherTypes>
-    Tuple</* implementation defined */> operator+=(const Tuple<OtherTypes...>& other) {
+    Tuple<T,Other ...> operator+=(const Tuple<OtherTypes...>& other) {
 
     }
 
@@ -48,7 +50,7 @@ namespace t {
      * Substraction between to tuples
      */
     template <typename ... OtherTypes>
-    Tuple</* implementation defined */> operator-(const Tuple<OtherTypes...>& other) {
+    Tuple<T,Other ...> operator-(const Tuple<OtherTypes...>& other) {
 
     }
 
@@ -56,7 +58,7 @@ namespace t {
      * Substraction between to tuples - in place
      */
     template <typename ... OtherTypes>
-    Tuple</* implementation defined */>& operator-=(const Tuple<OtherTypes...>& other) {
+    Tuple<T,Other ...>& operator-=(const Tuple<OtherTypes...>& other) {
 
     }
 
@@ -64,7 +66,7 @@ namespace t {
      * Multiplication between to tuples
      */
     template <typename ... OtherTypes>
-    Tuple</* implementation defined */> operator*(const Tuple<OtherTypes...>& other) {
+    Tuple<T,Other ...> operator*(const Tuple<OtherTypes...>& other) {
 
     }
 
@@ -72,7 +74,7 @@ namespace t {
      * Multiplication between to tuples - in place
      */
     template <typename ... OtherTypes>
-    Tuple</* implementation defined */>& operator*=(const Tuple<OtherTypes...>& other) {
+    Tuple<T,Other ...>& operator*=(const Tuple<OtherTypes...>& other) {
 
     }
 
@@ -132,6 +134,9 @@ namespace t {
     Tuple</* implementation defined */> operator|(Tuple<OtherTypes...>&& other) {
 
     }
+  private:
+    T value;
+    t::Tuple<Other ...> rightMember;
   };
 
   /**
@@ -141,6 +146,7 @@ namespace t {
   constexpr Tuple<Types...> makeTuple(Types&&... args) {
 
   }
+  
 
 }
 
