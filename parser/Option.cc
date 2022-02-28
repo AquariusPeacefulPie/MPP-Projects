@@ -17,7 +17,8 @@ namespace op {
 
   const std::string& Option::getValue() const {
     if(this->value == "")
-      throw std::runtime_error("No value expected");
+          throw std::runtime_error("No value expected");
+
     return this->value;
   }
 
@@ -81,8 +82,8 @@ namespace op {
 
   Option& Option::operator=(const std::string& value) {
     if(expectedValue){
-      this->value = value;
-      return *this;
+    this->value = value;
+    return *this;
     }else{
       throw std::runtime_error("No value expected");
     }
