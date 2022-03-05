@@ -3,8 +3,17 @@
 
 namespace t {
 
-  template<typename T, typename ... Other>
+
+  template<typename ... Others>
   class Tuple {
+    int operator()(){
+      return 0;
+    }
+  };
+
+
+  template<typename T, typename ... Others>
+  class Tuple<T, Others...> {
   public:
     /**
      * Default constructor
@@ -15,7 +24,7 @@ namespace t {
     /**
      * Constructor to initialize values
      */
-    Tuple(T firstValue, Other ... otherValue):value(firstValue),rightMember(otherValue ...)   
+    Tuple(T firstValue, Others ... otherValues) : value(firstValue),rightMember(get(1),otherValues ...)   
     {
     }
 
@@ -34,7 +43,7 @@ namespace t {
      * Addition between to tuples
      */
     template <typename OtherType, typename ... OtherTypes>
-    Tuple<T,Other> operator+(const Tuple<OtherType, OtherTypes...>& other) {
+    Tuple<T,Others ...> operator+(const Tuple<OtherType, OtherTypes...>& other) {
 
     }
 
@@ -42,7 +51,7 @@ namespace t {
      * Addition between two tuples - in place
      */
     template <typename ... OtherTypes>
-    Tuple<T,Other ...> operator+=(const Tuple<OtherTypes...>& other) {
+    Tuple<T,Others ...> operator+=(const Tuple<OtherTypes...>& other) {
 
     }
 
@@ -50,7 +59,7 @@ namespace t {
      * Substraction between to tuples
      */
     template <typename ... OtherTypes>
-    Tuple<T,Other ...> operator-(const Tuple<OtherTypes...>& other) {
+    Tuple<T,Others ...> operator-(const Tuple<OtherTypes...>& other) {
 
     }
 
@@ -58,7 +67,7 @@ namespace t {
      * Substraction between to tuples - in place
      */
     template <typename ... OtherTypes>
-    Tuple<T,Other ...>& operator-=(const Tuple<OtherTypes...>& other) {
+    Tuple<T,Others ...>& operator-=(const Tuple<OtherTypes...>& other) {
 
     }
 
@@ -66,7 +75,7 @@ namespace t {
      * Multiplication between to tuples
      */
     template <typename ... OtherTypes>
-    Tuple<T,Other ...> operator*(const Tuple<OtherTypes...>& other) {
+    Tuple<T,Others ...> operator*(const Tuple<OtherTypes...>& other) {
 
     }
 
@@ -74,7 +83,7 @@ namespace t {
      * Multiplication between to tuples - in place
      */
     template <typename ... OtherTypes>
-    Tuple<T,Other ...>& operator*=(const Tuple<OtherTypes...>& other) {
+    Tuple<T,Others ...>& operator*=(const Tuple<OtherTypes...>& other) {
 
     }
 
@@ -82,7 +91,7 @@ namespace t {
      * Division between to tuples
      */
     template <typename ... OtherTypes>
-    Tuple</* implementation defined */> operator/(const Tuple<OtherTypes...>& other) {
+    Tuple<T,Others ...> operator/(const Tuple<OtherTypes...>& other) {
 
     }
 
@@ -90,7 +99,7 @@ namespace t {
      * Division between to tuples - in place
      */
     template <typename ... OtherTypes>
-    Tuple</* implementation defined */>& operator/=(const Tuple<OtherTypes...>& other) {
+    Tuple<T,Others ...>& operator/=(const Tuple<OtherTypes...>& other) {
 
     }
 
@@ -131,12 +140,12 @@ namespace t {
      * Concatenate two tuples
      */
     template <typename ... OtherTypes>
-    Tuple</* implementation defined */> operator|(Tuple<OtherTypes...>&& other) {
+    Tuple<T,Others ...> operator|(Tuple<OtherTypes...>&& other) {
 
     }
   private:
     T value;
-    t::Tuple<Other ...> rightMember;
+    t::Tuple<Others ...> rightMember;
   };
 
   /**
