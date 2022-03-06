@@ -1,12 +1,17 @@
 #ifndef T_TUPLE_H
 #define T_TUPLE_H
 
+#include <string>
+#include <iostream>
+
 namespace t {
 
 
   template<typename ... Others>
-  class Tuple {
-    int operator()(){
+  class Tuple {   
+  public:
+    template<int index>
+    auto get() {
       return 0;
     }
   };
@@ -24,27 +29,44 @@ namespace t {
     /**
      * Constructor to initialize values
      */
-    Tuple(T firstValue, Others ... otherValues) : value(firstValue),rightMember(get(1),otherValues ...)   
+    Tuple(T firstValue, Others ... otherValues) : value(firstValue),rightMember(otherValues ...)   
     {
+
     }
 
-    /**
-     * Value getter
+
+
+    template <std::size_t index, typename... OthersTypes>
+    void print()
+    {
+      if constexpr (index == 0)
+      {
+        return;
+      }
+      std::cout<<this->template get<index-1>()<<std::endl;
+      print<index-1>();
+    }
+
+   /**
+     * Values getter
      */
     template<int index>
     T get() {
+      // return rightMember.test();
       if( index != 0){
-        return rightMember.get(index - 1);
+          return rightMember.template get<index - 1 >();
       }
       return this->value;
     }
 
+   
+
     /**
      * Addition between to tuples
      */
-    template <typename OtherType, typename ... OtherTypes>
-    Tuple<T,Others ...> operator+(const Tuple<OtherType, OtherTypes...>& other) {
-
+    template <typename ... OtherTypes>
+    Tuple<T,Others ...> operator+(const Tuple<OtherTypes...>& other) {
+      
     }
 
     /**
@@ -96,7 +118,7 @@ namespace t {
     }
 
     /**
-     * Division between to tuples - in place
+     * Division between two tuples - in place
      */
     template <typename ... OtherTypes>
     Tuple<T,Others ...>& operator/=(const Tuple<OtherTypes...>& other) {
@@ -104,16 +126,32 @@ namespace t {
     }
 
     /**
-     * Comparaison operators
+     * Comparison operators
      */
-    template <typename ... OtherTypes>
-    bool operator==(const Tuple<OtherTypes...>& other) {
 
+    template <std::size_t index, typename... OthersTypes>
+    bool compareTuple(t::Tuple<OthersTypes...> &t2)
+    {
+      if constexpr (index == 0)
+      {
+        return this->template get<0>() == t2.template get<0>();
+      }
+      else
+      {
+        return this->template get<index>() == t2.template get<index>() && 
+                                  this->compareTuple<index - 1>(t2);
+      }
     }
 
     template <typename ... OtherTypes>
-    bool operator!=(const Tuple<OtherTypes...>& other) {
+    bool operator==(const Tuple<OtherTypes...>& other) {
+      return this->compareTuple<sizeof...(OtherTypes) - 1>(other);
+    }
 
+
+    template <typename ... OtherTypes>
+    bool operator!=(const Tuple<OtherTypes...>& other) {
+      /* T0 DO */
     }
 
     template <typename ... OtherTypes>
