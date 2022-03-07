@@ -11,7 +11,7 @@ namespace t {
   class Tuple {   
   public:
     template<int index>
-    auto get() {
+    auto& get() {
       return 0;
     }
   };
@@ -51,12 +51,15 @@ namespace t {
      * Values getter
      */
     template<int index>
-    T get() {
+    auto& get() {
       // return rightMember.test();
-      if( index != 0){
+      if constexpr ( index != 0){
           return rightMember.template get<index - 1 >();
       }
-      return this->value;
+      else
+      {
+        return this->value;
+      }
     }
 
    
