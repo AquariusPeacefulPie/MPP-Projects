@@ -1,19 +1,26 @@
 #ifndef T_TUPLE_H
 #define T_TUPLE_H
 
-#include <string>
-#include <iostream>
-
 namespace t {
 
 
   template<typename ... Others>
-  class Tuple {   
-  public:
-    template<int index>
-    auto& get() {
+  class Tuple {
+    int operator()(){
       return 0;
     }
+  public:
+    // template<int index>
+    //  auto get() {
+
+    //   return nullptr;
+    // }
+
+    // template <typename ... OtherTypes>
+    // bool operator==(const Tuple<OtherTypes...>& other)const {
+    //       return true;
+    // }
+
   };
 
 
@@ -31,44 +38,51 @@ namespace t {
      */
     Tuple(T firstValue, Others ... otherValues) : value(firstValue),rightMember(otherValues ...)   
     {
-
+      // std::cout<< this->value <<"\n";
     }
 
 
-
-    template <std::size_t index, typename... OthersTypes>
-    void print()
-    {
-      if constexpr (index == 0)
-      {
-        return;
-      }
-      std::cout<<this->template get<index-1>()<<std::endl;
-      print<index-1>();
-    }
-
-   /**
-     * Values getter
+    /**
+     * Value getter
      */
     template<int index>
-    auto& get() {
+     const auto& get() const{
       // return rightMember.test();
-      if constexpr ( index != 0){
+      if constexpr( index != 0){
           return rightMember.template get<index - 1 >();
-      }
-      else
-      {
+      }else{
         return this->value;
       }
     }
 
-   
+    /**
+     * Value getter
+     */
+    template<int index>
+     auto& get() {
+      // return rightMember.test();
+      if constexpr( index != 0){
+          return rightMember.template get<index - 1 >();
+      }else{
+        return this->value;
+      }
+    }
+
+
+ 
+
+
+
+    
+    T test(){
+      return value;
+    }
 
     /**
      * Addition between to tuples
      */
-    template <typename ... OtherTypes>
-    Tuple<T,Others ...> operator+(const Tuple<OtherTypes...>& other) {
+    template <typename OtherType, typename ... OtherTypes>
+    Tuple<T,Others ...> operator+(const Tuple<OtherType, OtherTypes...>& other)const {
       
     }
 
@@ -76,7 +90,18 @@ namespace t {
      * Addition between two tuples - in place
      */
     template <typename ... OtherTypes>
-    Tuple<T,Others ...> operator+=(const Tuple<OtherTypes...>& other) {
+    Tuple<T,Others ...> &operator+=(const Tuple<OtherTypes...>& other) {
+      const size_t size = sizeof...(OtherTypes) ;
+      this->value +=  other.value;
+
+      if constexpr(size <= 1){
+
+        return *this;
+      }else{
+        // const Tuple<OtherTypes...>& ot = other.rightMember;
+        // return (this->rightMember += ot);
+      }
+      return *this;
 
     }
 
@@ -84,7 +109,7 @@ namespace t {
      * Substraction between to tuples
      */
     template <typename ... OtherTypes>
-    Tuple<T,Others ...> operator-(const Tuple<OtherTypes...>& other) {
+    Tuple<T,Others ...> operator-(const Tuple<OtherTypes...>& other)const {
 
     }
 
@@ -92,7 +117,7 @@ namespace t {
      * Substraction between to tuples - in place
      */
     template <typename ... OtherTypes>
-    Tuple<T,Others ...>& operator-=(const Tuple<OtherTypes...>& other) {
+    Tuple<T,Others ...> & operator-=(const Tuple<OtherTypes...>& other)const {
 
     }
 
@@ -100,7 +125,7 @@ namespace t {
      * Multiplication between to tuples
      */
     template <typename ... OtherTypes>
-    Tuple<T,Others ...> operator*(const Tuple<OtherTypes...>& other) {
+    Tuple<T,Others ...> operator*(const Tuple<OtherTypes...>& other)const {
 
     }
 
@@ -108,7 +133,7 @@ namespace t {
      * Multiplication between to tuples - in place
      */
     template <typename ... OtherTypes>
-    Tuple<T,Others ...>& operator*=(const Tuple<OtherTypes...>& other) {
+    Tuple<T,Others ...>& operator*=(const Tuple<OtherTypes...>& other)const {
 
     }
 
@@ -116,65 +141,117 @@ namespace t {
      * Division between to tuples
      */
     template <typename ... OtherTypes>
-    Tuple<T,Others ...> operator/(const Tuple<OtherTypes...>& other) {
+    Tuple<T,Others ...> operator/(const Tuple<OtherTypes...>& other)const {
 
     }
 
     /**
-     * Division between two tuples - in place
+     * Division between to tuples - in place
      */
     template <typename ... OtherTypes>
-    Tuple<T,Others ...>& operator/=(const Tuple<OtherTypes...>& other) {
+    Tuple<T,Others ...>& operator/=(const Tuple<OtherTypes...>& other)const {
 
     }
 
     /**
-     * Comparison operators
+     * Comparaison operators
      */
-
-    template <std::size_t index, typename... OthersTypes>
-    bool compareTuple(t::Tuple<OthersTypes...> &t2)
-    {
-      if constexpr (index == 0)
-      {
-        return this->template get<0>() == t2.template get<0>();
-      }
-      else
-      {
-        return this->template get<index>() == t2.template get<index>() && 
-                                  this->compareTuple<index - 1>(t2);
-      }
-    }
-
     template <typename ... OtherTypes>
-    bool operator==(const Tuple<OtherTypes...>& other) {
-      return this->compareTuple<sizeof...(OtherTypes) - 1>(other);
+    bool operator==(const Tuple<OtherTypes...>& other)const {
+      const size_t size = sizeof...(OtherTypes) ;
+
+        if ( other.value != value){
+          return false;
+        }else{
+            if constexpr(size == 1){
+              return true;
+            }else{
+              return (this->rightMember == other.rightMember);
+            }
+        } 
+      
     }
 
 
     template <typename ... OtherTypes>
-    bool operator!=(const Tuple<OtherTypes...>& other) {
-      /* T0 DO */
-    }
+    bool operator!=(const Tuple<OtherTypes...>& other)const {
+      const size_t size = sizeof...(OtherTypes) ;
 
-    template <typename ... OtherTypes>
-    bool operator<(const Tuple<OtherTypes...>& other) {
-
-    }
-
-    template <typename ... OtherTypes>
-    bool operator<=(const Tuple<OtherTypes...>& other) {
-
-    }
-
-    template <typename ... OtherTypes>
-    bool operator>(const Tuple<OtherTypes...>& other) {
+        if ( other.value != value){
+          return true;
+        }else{
+            if constexpr(size == 1){
+              return false;
+            }else{
+              return (this->rightMember != other.rightMember);
+            }
+        }
 
     }
 
     template <typename ... OtherTypes>
-    bool operator>=(const Tuple<OtherTypes...>& other) {
+    bool operator<(const Tuple<OtherTypes...>& other)const {
+      const size_t size = sizeof...(OtherTypes) ;
 
+        if ( value < other.value ){
+          return true;
+        }else {
+            if constexpr(size == 1){
+              return false;
+
+            }else{
+              return (this->rightMember < other.rightMember);
+            }
+        } 
+    }
+
+    template <typename ... OtherTypes>
+    bool operator<=(const Tuple<OtherTypes...>& other) const{
+      const size_t size = sizeof...(OtherTypes) ;
+
+        if ( value <= other.value ){
+          return true;
+        }else {
+            if constexpr(size == 1){
+              return true;
+            }else{
+              return (this->rightMember <= other.rightMember);
+            }
+        } 
+
+    }
+
+    template <typename ... OtherTypes>
+    bool operator>(const Tuple<OtherTypes...>& other)const {
+      const size_t size = sizeof...(OtherTypes) ;
+
+        if ( value > other.value ){
+          return true;
+        }else {
+            if constexpr(size == 1){
+              return false;
+            }else{
+              return (this->rightMember > other.rightMember);
+            }
+        }
+         
+    }
+
+    template <typename ... OtherTypes>
+    bool operator>=(const Tuple<OtherTypes...>& other) const{
+      const size_t size = sizeof...(OtherTypes) ;
+
+        if ( value >= other.value ){
+          return true;
+        }else {
+
+            if constexpr(size == 1){
+              return true;
+            }else{
+              return (this->rightMember >= other.rightMember);
+            }
+
+        } 
     }
 
     /**
@@ -194,7 +271,6 @@ namespace t {
    */
   template <class... Types>
   constexpr Tuple<Types...> makeTuple(Types&&... args) {
-
   }
   
 

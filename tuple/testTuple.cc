@@ -1,14 +1,23 @@
 #include <gtest/gtest.h>
-#include <iostream>
 
 #include "Tuple.h"
 
-TEST(Tuple,firstTest){
-  t::Tuple<int,std::size_t,int,int,int> t(4,78,8,7,9);
+
+TEST(get,expectedType){
+  t::Tuple<std::size_t,int,int,int,int> t(4,78,8,7,9);
   auto res = t.get<1>();
   std::cout << res;
   EXPECT_TRUE((std::is_same<decltype(res),int>::value) );
 }
+
+TEST(get,notExpectedType){
+  t::Tuple<int,std::size_t,int,int,int> t(4,78,8,7,9);
+  auto res = t.get<1>();
+  std::cout << res;
+  EXPECT_FALSE((std::is_same<decltype(res),int>::value) );
+}
+
+
 
 /* Constructors */
 
@@ -296,6 +305,126 @@ TEST(operatorEqual,sameType){
 //   EXPECT_EQ(t3.get<4>(),99u);
 //   EXPECT_EQ(t3.get<5>(),"working");
 // }
+
+
+TEST(Comparator,equalTest){
+  t::Tuple<int,int,float,std::string> t1(104,77,88.5,"eq");
+  t::Tuple<int,int,float,std::string> t2(104,77,88.5,"eq");
+
+  //  auto res = t1.get<1>();
+   EXPECT_TRUE(t1 == t2);
+}
+
+TEST(Comparator,equalTestFalse){
+  t::Tuple<int,int,float,std::string> t1(104,99,88.5,"sas");
+  t::Tuple<int,int,float,std::string> t2(104,77,88.5,"eq");
+
+   EXPECT_FALSE(t1 == t2);
+}
+
+
+
+
+TEST(Comparator,notEqualTest){
+  t::Tuple<int,int,float,std::string> t1(104,779,88.5,"eq");
+  t::Tuple<int,int,float,std::string> t2(104,77,88.5,"eq");
+
+   EXPECT_TRUE(t1 != t2);
+
+}
+
+TEST(Comparator,notEqualTestFalse){
+  t::Tuple<int,int,float,std::string> t1(104,77,88.5,"eq");
+  t::Tuple<int,int,float,std::string> t2(104,77,88.5,"eq");
+
+   EXPECT_FALSE(t1 != t2);
+
+}
+
+//Test with <
+
+TEST(Comparator,inferior){
+  t::Tuple<int,int,float,std::string> t1(101,77,88.5,"eq");
+  t::Tuple<int,int,float,std::string> t2(104,77,88.5,"eq");
+
+   EXPECT_TRUE(t1 < t2);
+
+}
+
+TEST(Comparator,inferiorFalse){
+  t::Tuple<int,int,float,std::string> t1(101,77,88.5,"eq");
+  t::Tuple<int,int,float,std::string> t2(101,77,88.5,"eq");
+
+   EXPECT_FALSE(t1 < t2);
+
+}
+
+TEST(Comparator,inferiorFalseV2){
+  t::Tuple<int,int,float,std::string> t1(999,77,88.5,"eq");
+  t::Tuple<int,int,float,std::string> t2(101,77,88.5,"eq");
+
+   EXPECT_FALSE(t1 < t2);
+
+}
+
+//Test with >= 
+TEST(Comparator,inferiorOrEqual){
+  t::Tuple<int,int,float,std::string> t1(104,77,88.5,"eq");
+  t::Tuple<int,int,float,std::string> t2(104,77,88.5,"eq");
+
+   EXPECT_TRUE(t1 <= t2);
+
+}
+
+//Test with >
+
+TEST(Comparator,superior){
+  t::Tuple<int,int,float,std::string> t1(104,77,88.5,"eq");
+  t::Tuple<int,int,float,std::string> t2(101,77,88.5,"eq");
+
+   EXPECT_TRUE(t1 > t2);
+
+}
+
+TEST(Comparator,superiorFalse){
+  t::Tuple<int,int,float,std::string> t1(101,77,88.5,"eq");
+  t::Tuple<int,int,float,std::string> t2(101,77,88.5,"eq");
+
+   EXPECT_FALSE(t1 > t2);
+
+}
+
+TEST(Comparator,superiorFalseV2){
+  t::Tuple<int,int,float,std::string> t1(101,77,88.5,"eq");
+  t::Tuple<int,int,float,std::string> t2(999,77,88.5,"eq");
+
+   EXPECT_FALSE(t1 > t2);
+
+}
+
+//Test with <=
+
+
+
+TEST(Comparator,plusegaltest){
+  t::Tuple<int,int> t1(104,77);
+  t::Tuple<int,int> t2(44,22);
+
+  //  auto res = t1.get<1>();
+  t1 += t2;
+}
+
+
+
+
+// TEST(Tuple,a){
+//   t::Tuple<float,double> t(104,208);
+//   auto res = t.get<3>();
+//   std::cout << res;
+//   EXPECT_TRUE( res = NULL );
+// }
+
+
 
 
 int main(int argc, char* argv[]) {
