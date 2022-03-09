@@ -406,15 +406,51 @@ TEST(Comparator,superiorFalseV2){
 
 
 
-TEST(Comparator,plusegaltest){
+TEST(attribution,addition){
   t::Tuple<int,int> t1(104,77);
   t::Tuple<int,int> t2(44,22);
 
-  //  auto res = t1.get<1>();
   t1 += t2;
+  auto res1 = t1.get<0>();
+  EXPECT_EQ(res1,148);
+
+  auto res2 = t1.get<1>();
+  EXPECT_EQ(res2,99);
 }
 
+TEST(attribution,substraction){
+  t::Tuple<int,float> t1(104,77.0);
+  t::Tuple<int,float> t2(44,22.0);
 
+  t1 -= t2;
+  auto res1 = t1.get<0>();
+  EXPECT_EQ(res1,60);
+
+  auto res2 = t1.get<1>();
+  EXPECT_EQ(res2,55);
+}
+
+TEST(attribution,division){
+  t::Tuple<int,float> t1(104,77.0);
+  t::Tuple<int,float> t2(2,2.0);
+  t1 /= t2;
+  auto res1 = t1.get<0>();
+  EXPECT_EQ(res1,52);
+
+  auto res2 = t1.get<1>();
+  EXPECT_EQ(res2,38.5);
+}
+
+TEST(attribution,multiplication){
+  t::Tuple<int,float> t1(104,77.0);
+  t::Tuple<int,float> t2(2,2.0);
+  t1 *= t2;
+  auto res1 = t1.get<0>();
+  EXPECT_EQ(res1,208);
+
+  auto res2 = t1.get<1>();
+  EXPECT_EQ(res2,154);
+}
 
 
 // TEST(Tuple,a){

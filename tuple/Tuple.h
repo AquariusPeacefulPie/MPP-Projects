@@ -38,7 +38,6 @@ namespace t {
      */
     Tuple(T firstValue, Others ... otherValues) : value(firstValue),rightMember(otherValues ...)   
     {
-      // std::cout<< this->value <<"\n";
     }
 
 
@@ -68,16 +67,6 @@ namespace t {
       }
     }
 
-
- 
-
-
-
-    
-    T test(){
-      return value;
-    }
-
     /**
      * Addition between to tuples
      */
@@ -93,16 +82,12 @@ namespace t {
     Tuple<T,Others ...> &operator+=(const Tuple<OtherTypes...>& other) {
       const size_t size = sizeof...(OtherTypes) ;
       this->value +=  other.value;
-
-      if constexpr(size <= 1){
-
+      if constexpr(size ==1){
         return *this;
       }else{
-        // const Tuple<OtherTypes...>& ot = other.rightMember;
-        // return (this->rightMember += ot);
+        this->rightMember += other.rightMember;
       }
       return *this;
-
     }
 
     /**
@@ -117,8 +102,15 @@ namespace t {
      * Substraction between to tuples - in place
      */
     template <typename ... OtherTypes>
-    Tuple<T,Others ...> & operator-=(const Tuple<OtherTypes...>& other)const {
-
+    Tuple<T,Others ...> & operator-=(const Tuple<OtherTypes...>& other) {
+      const size_t size = sizeof...(OtherTypes) ;
+      this->value -=  other.value;
+      if constexpr(size ==1){
+        return *this;
+      }else{
+        this->rightMember -= other.rightMember;
+      }
+      return *this;
     }
 
     /**
@@ -133,8 +125,15 @@ namespace t {
      * Multiplication between to tuples - in place
      */
     template <typename ... OtherTypes>
-    Tuple<T,Others ...>& operator*=(const Tuple<OtherTypes...>& other)const {
-
+    Tuple<T,Others ...>& operator*=(const Tuple<OtherTypes...>& other) {
+      const size_t size = sizeof...(OtherTypes) ;
+      this->value *=  other.value;
+      if constexpr(size ==1){
+        return *this;
+      }else{
+        this->rightMember *= other.rightMember;
+      }
+      return *this;
     }
 
     /**
@@ -149,8 +148,15 @@ namespace t {
      * Division between to tuples - in place
      */
     template <typename ... OtherTypes>
-    Tuple<T,Others ...>& operator/=(const Tuple<OtherTypes...>& other)const {
-
+    Tuple<T,Others ...>& operator/=(const Tuple<OtherTypes...>& other) {
+      const size_t size = sizeof...(OtherTypes) ;
+      this->value /=  other.value;
+      if constexpr(size ==1){
+        return *this;
+      }else{
+        this->rightMember /= other.rightMember;
+      }
+      return *this;
     }
 
     /**
