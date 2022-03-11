@@ -27,29 +27,26 @@ TEST(get,notExpectedType){
 //   std::cout<<"element : "<<test.get<1>()<<std::endl;
 // }
 
-// /* Comparison operators */
-
-TEST(operatorEqual,sameType){
-  t::Tuple<int> t1(42);
-  t::Tuple<int> t2(42);
+TEST(makeTuple,test){
+  auto t = t::makeTuple(13,17);
   
-  EXPECT_TRUE(t1==t2);
+  std::cout<<"element : "<<t.get<1>()<<std::endl;
 }
 
-// TEST(operatorEqual,differentTypesCompatible){
-//   t::Tuple<double> t1(42.0);
-//   t::Tuple<int> t2(42);
+// /* Comparison operators */
 
-//   EXPECT_TRUE((std::is_same<decltype(t1.get<0>()),double>::value) );
-//   EXPECT_NO_THROW(t1==t2);
+// TEST(operatorEqual,sameType){
+//   t::Tuple<int> t1(42);
+//   t::Tuple<int> t2(42);
+  
 //   EXPECT_TRUE(t1==t2);
 // }
 
+
 // TEST(operatorEqual,manyElementsCorrect){
 //   t::Tuple<double,int,std::string> t1(42.0,66,"abc");
-//   t::Tuple<double,int> t2(42.0,66,"abc");
+//   t::Tuple<double,int,std::string> t2(42.0,66,"abc");
 
-//   EXPECT_NO_THROW(t1==t2);
 //   EXPECT_TRUE(t1==t2);
 // }
 
@@ -65,15 +62,13 @@ TEST(operatorEqual,sameType){
 //   t::Tuple<int> t2(43);
 
 //   EXPECT_TRUE((std::is_same<decltype(t1.get<0>()),double>::value) );
-//   EXPECT_NO_THROW(t1!=t2);
 //   EXPECT_TRUE(t1!=t2);
 // }
 
 // TEST(operatorNotEqual,manyElementsCorrect){
 //   t::Tuple<double,int,std::string> t1(42.0,66,"abc");
-//   t::Tuple<double,int> t2(42.0,78,"abc");
+//   t::Tuple<double,int,std::string> t2(42.0,78,"abc");
 
-//   EXPECT_NO_THROW(t1!=t2);
 //   EXPECT_TRUE(t1!=t2);
 // }
 
@@ -90,7 +85,6 @@ TEST(operatorEqual,sameType){
 //   t::Tuple<int> t2(42);
 
 //   EXPECT_TRUE((std::is_same<decltype(t1.get<0>()),double>::value) );
-//   EXPECT_NO_THROW(t1>t2);
 //   EXPECT_TRUE(t1>t2);
 // }
 
@@ -98,7 +92,6 @@ TEST(operatorEqual,sameType){
 //   t::Tuple<double,int,std::string> t1(43.0,67,"def");
 //   t::Tuple<double,int> t2(42.0,66,"abc");
 
-//   EXPECT_NO_THROW(t1>t2);
 //   EXPECT_TRUE(t1>t2);
 // }
 
@@ -114,7 +107,6 @@ TEST(operatorEqual,sameType){
 //   t::Tuple<int> t2(43);
 
 //   EXPECT_TRUE((std::is_same<decltype(t1.get<0>()),double>::value) );
-//   EXPECT_NO_THROW(t1<t2);
 //   EXPECT_TRUE(t1<t2);
 // }
 
@@ -122,7 +114,6 @@ TEST(operatorEqual,sameType){
 //   t::Tuple<double,int,std::string> t1(42.0,66,"abc");
 //   t::Tuple<double,int> t2(43.0,67,"def");
 
-//   EXPECT_NO_THROW(t1<t2);
 //   EXPECT_TRUE(t1<t2);
 // }
 
@@ -138,7 +129,6 @@ TEST(operatorEqual,sameType){
 //   t::Tuple<int> t2(42);
 
 //   EXPECT_TRUE((std::is_same<decltype(t1.get<0>()),double>::value) );
-//   EXPECT_NO_THROW(t1>=t2);
 //   EXPECT_TRUE(t1>=t2);
 // }
 

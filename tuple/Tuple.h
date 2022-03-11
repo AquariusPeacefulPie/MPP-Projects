@@ -165,7 +165,6 @@ namespace t {
     template <typename ... OtherTypes>
     bool operator==(const Tuple<OtherTypes...>& other)const {
       const size_t size = sizeof...(OtherTypes) ;
-
         if ( other.value != value){
           return false;
         }else{
@@ -175,7 +174,6 @@ namespace t {
               return (this->rightMember == other.rightMember);
             }
         } 
-      
     }
 
 
@@ -277,6 +275,7 @@ namespace t {
    */
   template <class... Types>
   constexpr Tuple<Types...> makeTuple(Types&&... args) {
+    return {std::forward<Types>(args)...};
   }
   
 
