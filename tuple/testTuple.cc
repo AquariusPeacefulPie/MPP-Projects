@@ -443,12 +443,35 @@ TEST(attribution,multiplication){
 }
 
 
-// TEST(Tuple,a){
-//   t::Tuple<float,double> t(104,208);
-//   auto res = t.get<3>();
-//   std::cout << res;
-//   EXPECT_TRUE( res = NULL );
-// }
+
+TEST(operator,addition){
+  t::Tuple<int,float> t1(104,77.0);
+  t::Tuple<float,float> t2(2.5,2.0);
+  // auto t3 = t1 + t2;
+  auto t3 = t2 + t1;
+  auto inchange = t1.get<0>();
+  auto inchange2 = t2.get<0>();
+  auto res1 = t3.get<0>();
+}
+
+
+
+TEST(operator,testMAkeTuple){
+  t::Tuple<int,float> t1(104,77.0);
+  t::Tuple<float,float> t2(2.5,2.0);
+  auto res1 = t1.get<0>() + t2.get<0>()  ;
+
+  
+
+  auto t3 = t::makeTuple(t1.get<0>() + t2.get<0>());
+  std::cout<<t3.get<0>()  << "\n";
+
+
+  std::cout<<res1  << "\n";
+
+
+}
+
 
 
 

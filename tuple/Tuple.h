@@ -4,6 +4,11 @@
 namespace t {
 
 
+  bool check(){
+    return true;
+  }
+
+
   template<typename ... Others>
   class Tuple {
     int operator()(){
@@ -23,10 +28,19 @@ namespace t {
 
   };
 
+    /**
+   * Helper function to create a tuple
+   */
+  template <class... Types>
+  constexpr Tuple<Types...> makeTuple(Types&&... args) {
+    return {std::forward<Types>(args)...};
+  }
+
 
   template<typename T, typename ... Others>
   class Tuple<T, Others...> {
   public:
+    //  friend class rightMember;
     /**
      * Default constructor
      */
@@ -38,8 +52,12 @@ namespace t {
      */
     Tuple(T firstValue, Others ... otherValues) : value(firstValue),rightMember(otherValues ...)   
     {
+       
     }
 
+    Tuple<Others ...> getRightMember()const {
+      return this->rightMember;
+    }
 
     /**
      * Value getter
@@ -58,7 +76,7 @@ namespace t {
      * Value getter
      */
     template<int index>
-     auto& get() {
+      auto& get() {
       // return rightMember.test();
       if constexpr( index != 0){
           return rightMember.template get<index - 1 >();
@@ -67,13 +85,34 @@ namespace t {
       }
     }
 
+
+
+
+
     /**
      * Addition between to tuples
      */
-    template <typename OtherType, typename ... OtherTypes>
-    Tuple<T,Others ...> operator+(const Tuple<OtherType, OtherTypes...>& other)const {
+    
+    template <typename ... OtherTypes>
+    Tuple<T,Others ...> operator+(const Tuple<OtherTypes...>& other) const {
       
+      // Premiere methode probleme si on fait float + int et que other a un int c'est un int qui est retourné alors que ca doit être un float
+
+      //  auto t = other;
+      // t += *this; 
+      // return t;
+
+
+      //Deuxieme methode avec makeTuple mais probleme je vois pas comment faire avec make tuple sachant qu'on a pas le bon nombre d'argument
+      const size_t size = sizeof...(OtherTypes) ;
+      
+      auto t3 = t::makeTuple( get<0>() + other.template get<0>(),get<1>() + other.template get<1>() );
+
+
+      // std::cout << typeid(s).name() << "\n";
+     return t3;
     }
+
 
     /**
      * Addition between two tuples - in place
@@ -81,11 +120,11 @@ namespace t {
     template <typename ... OtherTypes>
     Tuple<T,Others ...> &operator+=(const Tuple<OtherTypes...>& other) {
       const size_t size = sizeof...(OtherTypes) ;
-      this->value +=  other.value;
+      this->value = get<0>() +  other.template get<0>();
       if constexpr(size ==1){
         return *this;
       }else{
-        this->rightMember += other.rightMember;
+        this->rightMember += other.getRightMember();
       }
       return *this;
     }
@@ -95,7 +134,9 @@ namespace t {
      */
     template <typename ... OtherTypes>
     Tuple<T,Others ...> operator-(const Tuple<OtherTypes...>& other)const {
-
+      auto t = other;
+      t -= *this; 
+      return t;
     }
 
     /**
@@ -118,7 +159,9 @@ namespace t {
      */
     template <typename ... OtherTypes>
     Tuple<T,Others ...> operator*(const Tuple<OtherTypes...>& other)const {
-
+      auto t = other;
+      t *= *this; 
+      return t;
     }
 
     /**
@@ -141,7 +184,9 @@ namespace t {
      */
     template <typename ... OtherTypes>
     Tuple<T,Others ...> operator/(const Tuple<OtherTypes...>& other)const {
-
+      auto t = other;
+      t /= *this; 
+      return t;
     }
 
     /**
@@ -270,13 +315,14 @@ namespace t {
     t::Tuple<Others ...> rightMember;
   };
 
-  /**
-   * Helper function to create a tuple
-   */
-  template <class... Types>
-  constexpr Tuple<Types...> makeTuple(Types&&... args) {
-    return {std::forward<Types>(args)...};
-  }
+  // /**
+  //  * Helper function to create a tuple
+  //  */
+  // template <class... Types>
+  // constexpr Tuple<Types...> makeTuple(Types&&... args) {
+  //   return {std::forward<Types>(args)...};
+  // }
+
   
 
 }
