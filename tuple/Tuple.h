@@ -11,20 +11,9 @@ namespace t {
 
   template<typename ... Others>
   class Tuple {
-    int operator()(){
-      return 0;
-    }
+
   public:
-    // template<int index>
-    //  auto get() {
 
-    //   return nullptr;
-    // }
-
-    // template <typename ... OtherTypes>
-    // bool operator==(const Tuple<OtherTypes...>& other)const {
-    //       return true;
-    // }
 
   };
 
@@ -40,7 +29,6 @@ namespace t {
   template<typename T, typename ... Others>
   class Tuple<T, Others...> {
   public:
-    //  friend class rightMember;
     /**
      * Default constructor
      */
@@ -95,23 +83,12 @@ namespace t {
     
     template <typename ... OtherTypes>
     Tuple<T,Others ...> operator+(const Tuple<OtherTypes...>& other) const {
-      
-      // Premiere methode probleme si on fait float + int et que other a un int c'est un int qui est retourné alors que ca doit être un float
-
-      //  auto t = other;
-      // t += *this; 
-      // return t;
-
-
-      //Deuxieme methode avec makeTuple mais probleme je vois pas comment faire avec make tuple sachant qu'on a pas le bon nombre d'argument
-      const size_t size = sizeof...(OtherTypes) ;
-      
-      auto t3 = t::makeTuple( get<0>() + other.template get<0>(),get<1>() + other.template get<1>() );
-
-
-      // std::cout << typeid(s).name() << "\n";
-     return t3;
+      auto t = *this;
+      t += other; 
+      return t;
     }
+
+
 
 
     /**
@@ -134,8 +111,8 @@ namespace t {
      */
     template <typename ... OtherTypes>
     Tuple<T,Others ...> operator-(const Tuple<OtherTypes...>& other)const {
-      auto t = other;
-      t -= *this; 
+      auto t = *this;
+      t -= other; 
       return t;
     }
 
@@ -149,7 +126,7 @@ namespace t {
       if constexpr(size ==1){
         return *this;
       }else{
-        this->rightMember -= other.rightMember;
+        this->rightMember -= other.getRightMember();;
       }
       return *this;
     }
@@ -159,8 +136,8 @@ namespace t {
      */
     template <typename ... OtherTypes>
     Tuple<T,Others ...> operator*(const Tuple<OtherTypes...>& other)const {
-      auto t = other;
-      t *= *this; 
+      auto t = *this;
+      t *= other; 
       return t;
     }
 
@@ -174,7 +151,7 @@ namespace t {
       if constexpr(size ==1){
         return *this;
       }else{
-        this->rightMember *= other.rightMember;
+        this->rightMember *= other.getRightMember();;
       }
       return *this;
     }
@@ -184,8 +161,8 @@ namespace t {
      */
     template <typename ... OtherTypes>
     Tuple<T,Others ...> operator/(const Tuple<OtherTypes...>& other)const {
-      auto t = other;
-      t /= *this; 
+      auto t = *this;
+      t /= other; 
       return t;
     }
 
@@ -199,7 +176,7 @@ namespace t {
       if constexpr(size ==1){
         return *this;
       }else{
-        this->rightMember /= other.rightMember;
+        this->rightMember /= other.getRightMember();;
       }
       return *this;
     }
