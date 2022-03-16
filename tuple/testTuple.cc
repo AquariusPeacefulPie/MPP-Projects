@@ -43,19 +43,19 @@ TEST(makeTuple,test){
 // }
 
 
-// TEST(operatorEqual,manyElementsCorrect){
-//   t::Tuple<double,int,std::string> t1(42.0,66,"abc");
-//   t::Tuple<double,int,std::string> t2(42.0,66,"abc");
+TEST(operatorEqual,manyElementsCorrect){
+  t::Tuple<double,int,std::string> t1(42.0,66,"abc");
+  t::Tuple<double,int,std::string> t2(42.0,66,"abc");
 
-//   EXPECT_TRUE(t1==t2);
-// }
+  EXPECT_TRUE(t1==t2);
+}
 
-// TEST(operatorNotEqual,sameType){
-//   t::Tuple<int> t1(42);
-//   t::Tuple<int> t2(42);
+TEST(operatorNotEqual,sameType){
+  t::Tuple<int> t1(42);
+  t::Tuple<int> t2(42);
   
-//   EXPECT_TRUE(t1==t2);
-// }
+  EXPECT_TRUE(t1==t2);
+}
 
 // TEST(operatorNotEqual,differentTypesCompatible){
 //   t::Tuple<double> t1(42.0);
@@ -65,20 +65,20 @@ TEST(makeTuple,test){
 //   EXPECT_TRUE(t1!=t2);
 // }
 
-// TEST(operatorNotEqual,manyElementsCorrect){
-//   t::Tuple<double,int,std::string> t1(42.0,66,"abc");
-//   t::Tuple<double,int,std::string> t2(42.0,78,"abc");
+TEST(operatorNotEqual,manyElementsCorrect){
+  t::Tuple<double,int,std::string> t1(42.0,66,"abc");
+  t::Tuple<double,int,std::string> t2(42.0,78,"abc");
 
-//   EXPECT_TRUE(t1!=t2);
-// }
+  EXPECT_TRUE(t1!=t2);
+}
 
 
-// TEST(operatorSuperior,sameType){
-//   t::Tuple<int> t1(43);
-//   t::Tuple<int> t2(42);
+TEST(operatorSuperior,sameType){
+  t::Tuple<int> t1(43);
+  t::Tuple<int> t2(42);
   
-//   EXPECT_TRUE(t1>t2);
-// }
+  EXPECT_TRUE(t1>t2);
+}
 
 // TEST(operatorSuperior,differentTypesCompatible){
 //   t::Tuple<double> t1(43.0);
@@ -88,19 +88,19 @@ TEST(makeTuple,test){
 //   EXPECT_TRUE(t1>t2);
 // }
 
-// TEST(operatorSuperior,manyElementsCorrect){
-//   t::Tuple<double,int,std::string> t1(43.0,67,"def");
-//   t::Tuple<double,int> t2(42.0,66,"abc");
+TEST(operatorSuperior,manyElementsCorrect){
+  t::Tuple<double,int,std::string> t1(43.0,67,"def");
+  t::Tuple<double,int,std::string> t2(42.0,66,"abc");
 
-//   EXPECT_TRUE(t1>t2);
-// }
+  EXPECT_TRUE(t1>t2);
+}
 
-// TEST(operatorInferior,sameType){
-//   t::Tuple<int> t1(42);
-//   t::Tuple<int> t2(43);
+TEST(operatorInferior,sameType){
+  t::Tuple<int> t1(42);
+  t::Tuple<int> t2(43);
   
-//   EXPECT_TRUE(t1<t2);
-// }
+  EXPECT_TRUE(t1<t2);
+}
 
 // TEST(operatorInferior,differentTypesCompatible){
 //   t::Tuple<double> t1(42.0);
@@ -110,19 +110,19 @@ TEST(makeTuple,test){
 //   EXPECT_TRUE(t1<t2);
 // }
 
-// TEST(operatorInferior,manyElementsCorrect){
-//   t::Tuple<double,int,std::string> t1(42.0,66,"abc");
-//   t::Tuple<double,int> t2(43.0,67,"def");
+TEST(operatorInferior,manyElementsCorrect){
+  t::Tuple<double,int,std::string> t1(42.0,66,"abc");
+  t::Tuple<double,int,std::string> t2(43.0,67,"def");
 
-//   EXPECT_TRUE(t1<t2);
-// }
+  EXPECT_TRUE(t1<t2);
+}
 
-// TEST(operatorSuperiorEqual,sameType){
-//   t::Tuple<int> t1(43);
-//   t::Tuple<int> t2(42);
+TEST(operatorSuperiorEqual,sameType){
+  t::Tuple<int> t1(43);
+  t::Tuple<int> t2(42);
   
-//   EXPECT_TRUE(t1>=t2);
-// }
+  EXPECT_TRUE(t1>=t2);
+}
 
 // TEST(operatorSuperiorEqual,differentTypesCompatible){
 //   t::Tuple<double> t1(43.0);
@@ -132,20 +132,20 @@ TEST(makeTuple,test){
 //   EXPECT_TRUE(t1>=t2);
 // }
 
-// TEST(operatorSuperiorEqual,manyElementsCorrect){
-//   t::Tuple<double,int,std::string> t1(43.0,66,"def");
-//   t::Tuple<double,int> t2(42.0,66,"abc");
+TEST(operatorSuperiorEqual,manyElementsCorrect){
+  t::Tuple<double,int,std::string> t1(43.0,66,"def");
+  t::Tuple<double,int,std::string> t2(42.0,66,"abc");
 
-//   EXPECT_NO_THROW(t1>=t2);
-//   EXPECT_TRUE(t1>=t2);
-// }
+  EXPECT_NO_THROW(t1>=t2);
+  EXPECT_TRUE(t1>=t2);
+}
 
-// TEST(operatorInferiorEqual,sameType){
-//   t::Tuple<int> t1(42);
-//   t::Tuple<int> t2(43);
+TEST(operatorInferiorEqual,sameType){
+  t::Tuple<int> t1(42);
+  t::Tuple<int> t2(43);
   
-//   EXPECT_TRUE(t1<=t2);
-// }
+  EXPECT_TRUE(t1<=t2);
+}
 
 // TEST(operatorInferiorEqual,differentTypesCompatible){
 //   t::Tuple<double> t1(42.0);
@@ -156,121 +156,145 @@ TEST(makeTuple,test){
 //   EXPECT_TRUE(t1<=t2);
 // }
 
-// TEST(operatorInferiorEqual,manyElementsCorrect){
-//   t::Tuple<double,int,std::string> t1(42.0,66,"abc");
-//   t::Tuple<double,int> t2(43.0,66,"def");
+TEST(operatorInferiorEqual,manyElementsCorrect){
+  t::Tuple<double,int,std::string> t1(42.0,66,"abc");
+  t::Tuple<double,int,std::string> t2(43.0,66,"def");
 
-//   EXPECT_NO_THROW(t1<=t2);
-//   EXPECT_TRUE(t1<=t2);
-// }
+  EXPECT_NO_THROW(t1<=t2);
+  EXPECT_TRUE(t1<=t2);
+}
 
 
 // /* Arithmetic operators */
 
-// TEST(operatorAddition,sameType){
-//   t::Tuple<int> t1(42);
-//   t::Tuple<int> t2(42);
+TEST(operatorAddition,sameType){
+  t::Tuple<int> t1(42);
+  t::Tuple<int> t2(42);
 
-//   EXPECT_NO_THROW(t1+t2);
-//   EXPECT_EQ(t1.get<0>(),84);
-// }
+  auto t3 = std::move(t1) + std::move(t2);
 
-// TEST(operatorAddition,compatibleTypes){
-//   t::Tuple<int> t1(42);
-//   t::Tuple<double> t2(42.0);
+  EXPECT_EQ(t3.get<0>(),84);
+}
 
-//   EXPECT_TRUE((std::is_same<decltype(t2.get<0>()),double>::value) );
-//   EXPECT_NO_THROW(t1+t2);
-//   EXPECT_EQ(t1.get<0>(),84.0);
-// }
+TEST(operatorAddition,compatibleTypes){
+  t::Tuple<int> t1(42);
+  t::Tuple<double> t2(42.0);
 
-// TEST(operatorAddition,manyElements){
-//   t::Tuple<int,double,std::string> t1(42,66.0,"abc");
-//   t::Tuple<int,double,std::string> t2(42,34.0,"def");
+  auto res = t2.get<0>();
 
-//   EXPECT_NO_THROW(t1+t2);
-//   EXPECT_EQ(t1.get<0>(),84);
-//   EXPECT_EQ(t1.get<1>(),100.0);
-//   EXPECT_EQ(t1.get<2>(),"abcdef");
-// }
+  EXPECT_TRUE((std::is_same<decltype(res),double>::value) );
 
-// TEST(operatorSubstraction,sameType){
-//   t::Tuple<int> t1(42);
-//   t::Tuple<int> t2(42);
+  auto t3 = std::move(t1) + std::move(t2);
 
-//   EXPECT_NO_THROW(t1-t2);
-//   EXPECT_EQ(t1.get<0>(),84);
-// }
+  EXPECT_EQ(t3.get<0>(),84);
+}
+
+TEST(operatorAddition,manyElements){
+  t::Tuple<int,double,std::string> t1(42,66.0,"abc");
+  t::Tuple<int,double,std::string> t2(42,34.0,"def");
+
+  auto t3 = std::move(t1) + std::move(t2);
+
+  EXPECT_EQ(t3.get<0>(),84);
+  EXPECT_EQ(t3.get<1>(),100.0);
+  EXPECT_EQ(t3.get<2>(),"abcdef");
+}
+
+TEST(operatorSubstraction,sameType){
+  t::Tuple<int> t1(42);
+  t::Tuple<int> t2(42);
+
+  auto t3 = std::move(t1) - std::move(t2);
+
+  EXPECT_EQ(t3.get<0>(),0);
+}
 
 // TEST(operatorSubstraction,compatibleTypes){
 //   t::Tuple<int> t1(42);
 //   t::Tuple<double> t2(42.0);
 
-//   EXPECT_TRUE((std::is_same<decltype(t2.get<0>()),double>::value) );
-//   EXPECT_NO_THROW(t1-t2);
-//   EXPECT_EQ(t1.get<0>(),84.0);
+//   auto res = t2.get<0>();
+
+//   EXPECT_TRUE((std::is_same<decltype(res),double>::value) );
+
+//   auto t3 = std::move(t1) - std::move(t2);
+
+//   EXPECT_EQ(t3.get<0>(),84.0);
 // }
 
-// TEST(operatorSubstraction,manyElements){
-//   t::Tuple<int,double> t1(42,66.0);
-//   t::Tuple<int,double> t2(42,34.0);
+TEST(operatorSubstraction,manyElements){
+  t::Tuple<int,double> t1(42,66.0);
+  t::Tuple<int,double> t2(42,34.0);
 
-//   EXPECT_NO_THROW(t1-t2);
-//   EXPECT_EQ(t1.get<0>(),0);
-//   EXPECT_EQ(t1.get<1>(),32.0);
-// }
+  auto t3 = std::move(t1) - std::move(t2);
 
-// TEST(operatorMultiplication,sameType){
-//   t::Tuple<int> t1(42);
-//   t::Tuple<int> t2(2);
+  EXPECT_EQ(t3.get<0>(),0);
+  EXPECT_EQ(t3.get<1>(),32.0);
+}
 
-//   EXPECT_NO_THROW(t1*t2);
-//   EXPECT_EQ(t1.get<0>(),84);
-// }
+TEST(operatorMultiplication,sameType){
+  t::Tuple<int> t1(42);
+  t::Tuple<int> t2(2);
+
+  auto t3 = std::move(t1) * std::move(t2);
+
+  EXPECT_EQ(t3.get<0>(),84);
+}
 
 // TEST(operatorMultiplication,compatibleTypes){
 //   t::Tuple<int> t1(42);
 //   t::Tuple<double> t2(2.0);
 
-//   EXPECT_TRUE((std::is_same<decltype(t2.get<0>()),double>::value) );
-//   EXPECT_NO_THROW(t1*t2);
-//   EXPECT_EQ(t1.get<0>(),84.0);
+//   auto res = t2.get<0>();
+
+//   EXPECT_TRUE((std::is_same<decltype(res),double>::value) );
+
+//   auto t3 = std::move(t1) * std::move(t2);
+
+//   EXPECT_EQ(t3.get<0>(),84.0);
 // }
 
-// TEST(operatorMultiplication,manyElements){
-//   t::Tuple<int,double> t1(42,66.0);
-//   t::Tuple<int,double> t2(2,2);
+TEST(operatorMultiplication,manyElements){
+  t::Tuple<int,double> t1(42,66.0);
+  t::Tuple<int,double> t2(2,2.0);
 
-//   EXPECT_NO_THROW(t1-t2);
-//   EXPECT_EQ(t1.get<0>(),84);
-//   EXPECT_EQ(t1.get<1>(),132);
-// }
+  auto t3 = std::move(t1) * std::move(t2);
 
-// TEST(operatorDivision,sameType){
-//   t::Tuple<int> t1(42);
-//   t::Tuple<int> t2(2);
+  EXPECT_EQ(t3.get<0>(),84);
+  EXPECT_EQ(t3.get<1>(),132);
+}
 
-//   EXPECT_NO_THROW(t1/t2);
-//   EXPECT_EQ(t1.get<0>(),21);
-// }
+TEST(operatorDivision,sameType){
+  t::Tuple<int> t1(42);
+  t::Tuple<int> t2(2);
+
+  auto t3 = std::move(t1) / std::move(t2);
+
+  EXPECT_EQ(t3.get<0>(),21);
+}
 
 // TEST(operatorDivision,compatibleTypes){
 //   t::Tuple<int> t1(42);
 //   t::Tuple<double> t2(2.0);
 
-//   EXPECT_TRUE((std::is_same<decltype(t2.get<0>()),double>::value) );
-//   EXPECT_NO_THROW(t1/t2);
-//   EXPECT_EQ(t1.get<0>(),21.0);
+//   auto res = t2.get<0>();
+
+//   EXPECT_TRUE((std::is_same<decltype(res),double>::value) );
+
+//   auto t3 = std::move(t1) / std::move(t2);
+
+//   EXPECT_EQ(t3.get<0>(),21.0);
 // }
 
-// TEST(operatorDivision,manyElements){
-//   t::Tuple<int,double> t1(21,66.0);
-//   t::Tuple<int,double> t2(2,2);
+TEST(operatorDivision,manyElements){
+  t::Tuple<int,double> t1(21,66.0);
+  t::Tuple<int,double> t2(2,2);
 
-//   EXPECT_NO_THROW(t1-t2);
-//   EXPECT_EQ(t1.get<0>(),21);
-//   EXPECT_EQ(t1.get<1>(),33);
-// }
+  auto t3 = std::move(t1) / std::move(t2);
+
+  EXPECT_EQ(t3.get<0>(),10);
+  EXPECT_EQ(t3.get<1>(),33);
+}
 
 // TEST(concatenation,twoStrings){
 //   t::Tuple<std::string> t1("it's");
