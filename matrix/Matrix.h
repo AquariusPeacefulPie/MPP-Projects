@@ -43,28 +43,37 @@ namespace mat {
     }
 
     // Conversion constructor
-    constexpr Matrix(const Matrix<Type, Rows, Cols, Order>& other) {
-      int k = 0;
-      if(Order != this.Order){
-        auto otherConvert = convert(other);
-        for(auto it = otherConvert.begin(); it != otherConvert.end(); ++it) {
-          m_container[k] = *it;
-          k++;
-        }
-      }else{
-        for(auto it = other.begin(); it != other.end(); ++it) {
-          m_container[k] = *it;
-          k++;
-      }
-    }
-    }
-    // Affectation from a matrix with different ordering
-    constexpr auto& operator=(const Matrix<Type, Rows, Cols, Order>& other) {
-    }
+    // constexpr Matrix(const Matrix<Type, Rows, Cols, Order>& other) {
+    //   int k = 0;
+    //   if(Order != this.Order){
+    //     auto otherConvert = convert(other);
+    //     for(auto it = otherConvert.begin(); it != otherConvert.end(); ++it) {
+    //       m_container[k] = *it;
+    //       k++;
+    //     }
+    //   }else{
+    //     for(auto it = other.begin(); it != other.end(); ++it) {
+    //       m_container[k] = *it;
+    //       k++;
+    //   }
+    // }
+    // }
 
-  //   // Retrun the transposed matrix
-  //   constexpr Matrix<Type, Cols, Rows, Order> transpose() {
-  //   }
+
+    // Affectation from a matrix with different ordering
+    // constexpr auto& operator=(const Matrix<Type, Rows, Cols, Order>& other) {
+    // }
+
+    // // Retrun the transposed matrix
+    constexpr Matrix<Type, Cols, Rows, Order> transpose() {
+      Matrix<Type,Cols,Rows,Order> newMat;
+      for(size_t i = 0; i<Rows; i++){
+        for(size_t j = 0; j<Cols; j++){ 
+          newMat(i,j) = (*this)(j,i);
+        }
+      }
+      return newMat;
+    }
 
     // Get the value at specified row and col
     constexpr const Type& operator() (int row, int col) const {
@@ -81,51 +90,117 @@ namespace mat {
         return  m_container[(col * Rows) + row];      
     }
 
-  //   // Addition - in place
-  //   template<typename OtherType, MatrixOrdering otherOrder>
-  //   auto& operator+=(const Matrix<OtherType, Rows, Cols, otherOrder>& other) {
-  //   }
+    //Print the matrix in the terminal
+    void print(){
+      for(size_t i = 0; i<Rows; i++){
+        for(size_t j = 0; j<Cols; j++){
+          std::cout<<(*this)(i,j)<<" ";
+        }
+        std::cout<<std::endl;
+      }
+    }
 
-  //   // Addition - classic
-  //   template<typename OtherType, MatrixOrdering otherOrder>
-  //   constexpr Matrix<std::common_type_t<Type, OtherType>, Rows, Cols, Order> operator+(const Matrix<OtherType, Rows, Cols, otherOrder>& other) const {
-  //   }
+    // Addition - in place
+    template<typename OtherType, MatrixOrdering otherOrder>
+    auto& operator+=(const Matrix<OtherType, Rows, Cols, otherOrder>& other) {
+      Matrix<Type, Rows, Cols, Order> tmp;
+      tmp = *this + other;
 
-  //   // Substration - in place
-  //   template<typename OtherType, MatrixOrdering otherOrder>
-  //   auto& operator-=(const Matrix<OtherType, Rows, Cols, otherOrder>& other) {
-  //   }
+      *this = tmp;
 
-  //   // Substraction - classic
-  //   template<typename OtherType, MatrixOrdering otherOrder>
-  //   constexpr Matrix<std::common_type_t<Type, OtherType>, Rows, Cols, Order> operator-(const Matrix<OtherType, Rows, Cols, otherOrder>& other) const {
-  //   }
+      return *this;
+    }
 
-  //   // Product - in place
-  //   template<typename OtherType, MatrixOrdering otherOrder>
-  //   auto& operator*=(const Matrix<OtherType, Rows, Cols, otherOrder>& other) {
-  //     Matrix<Type, Rows, Cols, Order> tmp;
-  //     tmp = *this * other;
+    // Addition - classic
+    template<typename OtherType, MatrixOrdering otherOrder>
+    constexpr Matrix<std::common_type_t<Type, OtherType>, Rows, Cols, Order> operator+(const Matrix<OtherType, Rows, Cols, otherOrder>& other) const {
+      Matrix<Type,Rows,Cols,Order> newMat;
+      for(size_t i = 0; i<Rows; i++){
+        for(size_t j = 0; j<Cols; j++){
+          newMat(i,j) = (*this)(i,j) + other(i,j);
+        }
+      }
+      return newMat;
+    }
 
-  //     *this = tmp;
+     // Substration - in place
+    template<typename OtherType, MatrixOrdering otherOrder>
+    auto& operator-=(const Matrix<OtherType, Rows, Cols, otherOrder>& other) {
+      Matrix<Type, Rows, Cols, Order> tmp;
+      tmp = *this - other;
 
-  //     return *this;
-  //   }
+      *this = tmp;
 
-  //   // Product - classic
-  //   template<typename OtherType, int OtherCols, MatrixOrdering otherOrder>
-  //   constexpr Matrix<std::common_type_t<Type, OtherType>, Rows, OtherCols, Order> operator*(const Matrix<OtherType, Cols, OtherCols, otherOrder>& other) const {
-  //   }
+      return *this;
+    }
 
-  //   // Equality
-  //   template<typename OtherType, int OtherRows, int OtherCols, MatrixOrdering otherOrder>
-  //   constexpr bool operator==(const Matrix<OtherType, OtherRows, OtherCols, otherOrder>& other) const {
-  //   }
+    // Substraction - classic
+    template<typename OtherType, MatrixOrdering otherOrder>
+    constexpr Matrix<std::common_type_t<Type, OtherType>, Rows, Cols, Order> operator-(const Matrix<OtherType, Rows, Cols, otherOrder>& other) const {
+      Matrix<Type,Rows,Cols,Order> newMat;
+      for(size_t i = 0; i<Rows; i++){
+        for(size_t j = 0; j<Cols; j++){
+          newMat(i,j) = (*this)(i,j) - other(i,j);
+        }
+      }
+      return newMat;
+    }
 
-  //   // Difference
-  //   template<typename OtherType, int OtherRows, int OtherCols, MatrixOrdering otherOrder>
-  //   constexpr bool operator!=(const Matrix<OtherType, OtherRows, OtherCols, otherOrder>& other) const {
-  //   }
+    // Product - in place
+    template<typename OtherType, MatrixOrdering otherOrder>
+    auto& operator*=(const Matrix<OtherType, Rows, Cols, otherOrder>& other) {
+      Matrix<Type, Rows, Cols, Order> tmp;
+      tmp = *this * other;
+
+      *this = tmp;
+
+      return *this;
+    }
+
+    // Product - classic
+    template<typename OtherType, int OtherCols, MatrixOrdering otherOrder>
+    constexpr Matrix<std::common_type_t<Type, OtherType>, Rows, OtherCols, Order> operator*(const Matrix<OtherType,Cols, OtherCols, otherOrder>& other) const {
+      Matrix<Type,Rows,Cols,Order> newMat;
+      int b = 0;
+      int rank = 0;
+      int c = 0;
+      for(size_t i = 0; i<Rows; ++i){
+        for(size_t j = 0; j<OtherCols*Cols+Cols-1; ++j){
+            if(b==OtherCols){
+              b = 0;
+              rank++;
+              c++;
+            }
+            else{
+              newMat(i,rank) += (*this)(i,b) * other(b,c); 
+              b++;
+            }
+        }
+        c = 0;
+        rank = 0;
+        b = 0;
+      }
+      return newMat;
+    }
+
+    // Equality
+    template<typename OtherType, int OtherRows, int OtherCols, MatrixOrdering otherOrder>
+    constexpr bool operator==(const Matrix<OtherType, OtherRows, OtherCols, otherOrder>& other) const {
+      for(size_t i = 0; i<OtherRows; i++){
+        for(size_t j = 0; j<OtherCols; j++){
+          if((*this)(i,j)!=other(i,j)){
+            return false;
+          }
+        }
+      }
+      return true;
+    }
+
+    // Difference
+    template<typename OtherType, int OtherRows, int OtherCols, MatrixOrdering otherOrder>
+    constexpr bool operator!=(const Matrix<OtherType, OtherRows, OtherCols, otherOrder>& other) const {
+      return !(*this == other);
+    }
 
   // public:
   //   /**

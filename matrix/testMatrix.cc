@@ -81,6 +81,146 @@ TEST(convert,ColToRow){
 }
 
 
+/*
+  Arithmetic operators
+*/
+
+
+TEST(additionInPlace,oneElement){
+  int arr[1] = {5};
+  int arr2[1] = {10};
+
+  mat::Matrix<int,1,1> mat(arr);
+  mat::Matrix<int,1,1> mat2(arr2);
+
+  mat+=mat2;
+
+  EXPECT_EQ(15,mat(0,0));
+}
+
+
+TEST(additionInPlace,ManyElements){
+  int arr[1] = {5};
+  int arr2[1] = {10};
+
+  mat::Matrix<int,1,1> mat(arr);
+  mat::Matrix<int,1,1> mat2(arr2);
+
+  mat+=mat2;
+
+  EXPECT_EQ(15,mat(0,0));
+}
+
+
+TEST(additionInPlace,differentOrder){
+  int arr[1] = {5};
+  int arr2[1] = {10};
+
+  mat::Matrix<int,1,1> mat(arr);
+  mat::Matrix<int,1,1> mat2(arr2);
+
+  mat+=mat2;
+
+  EXPECT_EQ(15,mat(0,0));
+}
+
+
+TEST(addition,oneElement){
+  int arr[1] = {5};
+  int arr2[1] = {10};
+
+  mat::Matrix<int,1,1> mat(arr);
+  mat::Matrix<int,1,1> mat2(arr2);
+
+  mat::Matrix<int,1,1> mat3;
+  mat3 = mat + mat2;
+
+  EXPECT_EQ(15,mat3(0,0));
+}
+
+
+TEST(substractionInPlace,oneElement){
+  int arr[1] = {5};
+  int arr2[1] = {10};
+
+  mat::Matrix<int,1,1> mat(arr);
+  mat::Matrix<int,1,1> mat2(arr2);
+
+  mat-=mat2;
+
+  EXPECT_EQ(-5,mat(0,0));
+}
+
+
+TEST(substraction,oneElement){
+  int arr[1] = {5};
+  int arr2[1] = {10};
+
+  mat::Matrix<int,1,1> mat(arr);
+  mat::Matrix<int,1,1> mat2(arr2);
+
+  mat::Matrix<int,1,1> mat3;
+  mat3 = mat - mat2;
+
+  EXPECT_EQ(-5,mat3(0,0));
+}
+
+
+// TEST(product,manyElements){
+//   int arr[6] = {1,2,3,4,5,6};
+
+//   mat::Matrix<int,2,3> mat(arr);
+//   mat::Matrix<int,3,2> mat2(arr);
+
+//   mat::Matrix<int,2,2> mat3;
+
+//   mat3 = mat * mat2;
+// }
+
+TEST(product,squaredMatrix){
+  int arr[4] = {1,2,3,4};
+
+  mat::Matrix<int,2,2> mat(arr);
+  mat::Matrix<int,2,2> mat2(arr);
+
+  mat::Matrix<int,2,2> mat3;
+
+  mat3 = mat * mat2;
+
+  EXPECT_EQ(7,mat3(0,0));
+  EXPECT_EQ(10,mat3(0,1));
+  EXPECT_EQ(15,mat3(1,0));
+  EXPECT_EQ(22,mat3(1,1));
+}
+
+TEST(productInPlace,squaredMatrix){
+  int arr[4] = {1,2,3,4};
+
+  mat::Matrix<int,2,2> mat(arr);
+  mat::Matrix<int,2,2> mat2(arr);
+  mat::Matrix<int,2,2> mat3;
+
+  mat *= mat2;
+
+  EXPECT_EQ(7,mat(0,0));
+  EXPECT_EQ(10,mat(0,1));
+  EXPECT_EQ(15,mat(1,0));
+  EXPECT_EQ(22,mat(1,1));
+}
+
+TEST(transpose,squaredMatrix){
+  int arr[4] = {1,2,3,4};
+  mat::Matrix<int,2,2> mat(arr);
+  mat::Matrix<int,2,2> mat2 = mat.transpose();
+  
+  EXPECT_EQ(1,mat2(0,0));
+  EXPECT_EQ(3,mat2(0,1));
+  EXPECT_EQ(2,mat2(1,0));
+  EXPECT_EQ(4,mat2(1,1));
+}
+
+
+
 
 int main(int argc, char* argv[]) {
   ::testing::InitGoogleTest(&argc, argv);
