@@ -64,11 +64,11 @@ namespace mat {
     // constexpr auto& operator=(const Matrix<Type, Rows, Cols, Order>& other) {
     // }
 
-    // // Retrun the transposed matrix
+    // // Return the transposed matrix
     constexpr Matrix<Type, Cols, Rows, Order> transpose() {
       Matrix<Type,Cols,Rows,Order> newMat;
-      for(size_t i = 0; i<Rows; i++){
-        for(size_t j = 0; j<Cols; j++){ 
+      for(size_t i = 0; i<Cols; i++){
+        for(size_t j = 0; j<Rows; j++){ 
           newMat(i,j) = (*this)(j,i);
         }
       }
@@ -159,14 +159,16 @@ namespace mat {
 
     // Product - classic
     template<typename OtherType, int OtherCols, MatrixOrdering otherOrder>
-    constexpr Matrix<std::common_type_t<Type, OtherType>, Rows, OtherCols, Order> operator*(const Matrix<OtherType,Cols, OtherCols, otherOrder>& other) const {
-      Matrix<Type,Rows,Cols,Order> newMat;
+    constexpr Matrix<std::common_type_t<Type, OtherType>, Rows, OtherCols, Order> operator*(const Matrix<OtherType, Cols, OtherCols, otherOrder>& other) const  {
+      Matrix<Type,Rows,OtherCols,Order> newMat;
+      //Memory indexes
       int b = 0;
       int rank = 0;
       int c = 0;
+      //Matrix computation
       for(size_t i = 0; i<Rows; ++i){
-        for(size_t j = 0; j<OtherCols*Cols+Cols-1; ++j){
-            if(b==OtherCols){
+        for(size_t j = 0; j<OtherCols*Cols+OtherCols-1; ++j){
+            if(b==Cols){
               b = 0;
               rank++;
               c++;
@@ -176,9 +178,7 @@ namespace mat {
               b++;
             }
         }
-        c = 0;
-        rank = 0;
-        b = 0;
+        c = rank = b = 0;
       }
       return newMat;
     }

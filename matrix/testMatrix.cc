@@ -166,16 +166,30 @@ TEST(substraction,oneElement){
 }
 
 
-// TEST(product,manyElements){
-//   int arr[6] = {1,2,3,4,5,6};
+TEST(product,manyElements){
+  int arr[6] = {1,2,3,4,5,6};
 
-//   mat::Matrix<int,2,3> mat(arr);
-//   mat::Matrix<int,3,2> mat2(arr);
+  mat::Matrix<int,2,3> mat(arr);
+  mat::Matrix<int,3,2> mat2(arr);
 
-//   mat::Matrix<int,2,2> mat3;
+  mat::Matrix<int,2,2> mat3;
 
-//   mat3 = mat * mat2;
-// }
+  std::cout<<"mat 1 : "<<std::endl;
+  mat.print();
+
+  std::cout<<"mat 1 : "<<std::endl;
+  mat2.print();
+
+  mat3 = mat * mat2;
+   
+  mat3.print();
+
+
+  EXPECT_EQ(22,mat3(0,0));
+  EXPECT_EQ(28,mat3(0,1));
+  EXPECT_EQ(49,mat3(1,0));
+  EXPECT_EQ(64,mat3(1,1));
+}
 
 TEST(product,squaredMatrix){
   int arr[4] = {1,2,3,4};
@@ -213,10 +227,36 @@ TEST(transpose,squaredMatrix){
   mat::Matrix<int,2,2> mat(arr);
   mat::Matrix<int,2,2> mat2 = mat.transpose();
   
+
   EXPECT_EQ(1,mat2(0,0));
   EXPECT_EQ(3,mat2(0,1));
   EXPECT_EQ(2,mat2(1,0));
   EXPECT_EQ(4,mat2(1,1));
+
+  EXPECT_EQ(1,mat2(0,0));
+  EXPECT_EQ(3,mat2(0,1));
+  EXPECT_EQ(2,mat2(1,0));
+  EXPECT_EQ(4,mat2(1,1));
+}
+
+TEST(transpose,simple){
+  int arr[6] = {1,3,5,2,4,6};
+  mat::Matrix<int,2,3> mat(arr);
+  mat::Matrix<int,3,2> mat2 = mat.transpose();
+
+  EXPECT_EQ(1,mat(0,0));
+  EXPECT_EQ(3,mat(0,1));
+  EXPECT_EQ(5,mat(0,2));
+  EXPECT_EQ(2,mat(1,0));
+  EXPECT_EQ(4,mat(1,1));
+  EXPECT_EQ(6,mat(1,2));
+
+  EXPECT_EQ(1,mat2(0,0));
+  EXPECT_EQ(2,mat2(0,1));
+  EXPECT_EQ(3,mat2(1,0));
+  EXPECT_EQ(4,mat2(1,1));
+  EXPECT_EQ(5,mat2(2,0));
+  EXPECT_EQ(6,mat2(2,1));
 }
 
 
