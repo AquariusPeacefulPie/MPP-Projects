@@ -284,8 +284,7 @@ namespace mat {
         // std::cout<< newArray[j] << "*****\n";
         }
       }
-        return Matrix<Type, Rows, Cols, MatrixOrdering::ColMajor>(newArray);
-        
+      return Matrix<Type, Rows, Cols, MatrixOrdering::ColMajor>(newArray);    
     }else{
       for(int i = 0 ; i < Rows ; i++){
         for(int j = i ; j < Rows*Cols ; j = j + Rows){
