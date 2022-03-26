@@ -3,7 +3,8 @@
 #include "Matrix.h"
 
 TEST(constructor,debut){
-  mat::Matrix<int,2,3>mat;
+  mat::Matrix<int,2,3> mat;
+  EXPECT_TRUE(mat.Order == mat::MatrixOrdering::RowMajor);
 }
 
 TEST(constructor,withArray){
@@ -76,7 +77,46 @@ TEST(convert,ColToRow){
   EXPECT_EQ( newMatrix(1,1),4);
   EXPECT_EQ( newMatrix(1,2),6);
   EXPECT_TRUE(newMatrix.Order == mat::MatrixOrdering::RowMajor);
+}
 
+TEST(affectation,sameOrder){
+  int arr[3] = {1,2,3};
+  mat::Matrix<int,1,3> mat(arr);
+  int arr2[3] = {4,5,6};
+  mat::Matrix<int,1,3,mat::MatrixOrdering::RowMajor> mat2(arr2);
+
+  mat = mat2;
+
+  EXPECT_EQ(4,mat(0,0));
+  EXPECT_EQ(5,mat(0,1));
+  EXPECT_EQ(6,mat(0,2));
+}
+
+
+TEST(affectation,differentOrderRowMajorMain){
+  int arr[3] = {1,2,3};
+  mat::Matrix<int,1,3> mat(arr);
+  int arr2[3] = {4,5,6};
+  mat::Matrix<int,1,3,mat::MatrixOrdering::ColMajor> mat2(arr2);
+
+  mat = mat2;
+
+  EXPECT_EQ(4,mat(0,0));
+  EXPECT_EQ(5,mat(0,1));
+  EXPECT_EQ(6,mat(0,2));
+}
+
+TEST(affectation,differentOrderColMajorMain){
+  int arr[3] = {1,2,3};
+  mat::Matrix<int,1,3,mat::MatrixOrdering::ColMajor> mat(arr);
+  int arr2[3] = {4,5,6};
+  mat::Matrix<int,1,3> mat2(arr2);
+
+  mat = mat2;
+
+  EXPECT_EQ(4,mat(0,0));
+  EXPECT_EQ(5,mat(0,1));
+  EXPECT_EQ(6,mat(0,2));
 }
 
 
@@ -114,18 +154,51 @@ TEST(additionInPlace,ManyElementsRowMajor){
 }
 
 
-// TEST(additionInPlace,differentOrder){
-//   int arr[1] = {5};
-//   int arr2[1] = {10};
+TEST(additionInPlace,differentOrder){
+  int arr[1] = {5};
+  int arr2[1] = {10};
 
-//   mat::Matrix<int,1,1> mat(arr);
-//   mat::Matrix<int,1,1> mat2(arr2);
+  mat::Matrix<int,1,1> mat(arr);
+  mat::Matrix<int,1,1> mat2(arr2);
 
-//   mat+=mat2;
+  mat+=mat2;
 
-//   EXPECT_EQ(15,mat(0,0));
-// }
+  EXPECT_EQ(15,mat(0,0));
+}
 
+TEST(additionInPlace,manyElementsSameMatrixDifferentOrderRowMajor){
+  int arr[6] = {1,2,3,4,5,6};
+
+  mat::Matrix<int,2,3,mat::MatrixOrdering::RowMajor> mat(arr);
+  mat::Matrix<int,2,3,mat::MatrixOrdering::ColMajor> mat2(arr);
+
+  mat += mat2;
+
+  EXPECT_EQ(2,mat(0,0));
+  EXPECT_EQ(5,mat(0,1));
+  EXPECT_EQ(8,mat(0,2));
+  EXPECT_EQ(6,mat(1,0));
+  EXPECT_EQ(9,mat(1,1));
+  EXPECT_EQ(12,mat(1,2));
+  EXPECT_TRUE(mat.Order==mat::MatrixOrdering::RowMajor);
+}
+
+TEST(additionInPlace,manyElementsSameMatrixDifferentOrderColMajor){
+  int arr[6] = {1,2,3,4,5,6};
+
+  mat::Matrix<int,2,3,mat::MatrixOrdering::ColMajor> mat(arr);
+  mat::Matrix<int,2,3,mat::MatrixOrdering::RowMajor> mat2(arr);
+
+  mat += mat2;
+
+  EXPECT_EQ(2,mat(0,0));
+  EXPECT_EQ(5,mat(0,1));
+  EXPECT_EQ(8,mat(0,2));
+  EXPECT_EQ(6,mat(1,0));
+  EXPECT_EQ(9,mat(1,1));
+  EXPECT_EQ(12,mat(1,2));
+  EXPECT_TRUE(mat.Order==mat::MatrixOrdering::ColMajor);
+}
 
 TEST(addition,oneElement){
   int arr[1] = {5};
@@ -156,6 +229,40 @@ TEST(addition,ManyElementsRowMajor){
   EXPECT_EQ(60,mat3(1,1));
 }
 
+TEST(addition,manyElementsSameMatrixDifferentOrderRowMajor){
+  int arr[6] = {1,2,3,4,5,6};
+
+  mat::Matrix<int,2,3,mat::MatrixOrdering::RowMajor> mat(arr);
+  mat::Matrix<int,2,3,mat::MatrixOrdering::ColMajor> mat2(arr);
+
+  mat::Matrix<int,2,3,mat::MatrixOrdering::RowMajor> mat3 = mat+mat2;
+
+  EXPECT_EQ(2,mat3(0,0));
+  EXPECT_EQ(5,mat3(0,1));
+  EXPECT_EQ(8,mat3(0,2));
+  EXPECT_EQ(6,mat3(1,0));
+  EXPECT_EQ(9,mat3(1,1));
+  EXPECT_EQ(12,mat3(1,2));
+  EXPECT_TRUE(mat3.Order==mat::MatrixOrdering::RowMajor);
+}
+
+TEST(addition,manyElementsSameMatrixDifferentOrderColMajor){
+  int arr[6] = {1,2,3,4,5,6};
+
+  mat::Matrix<int,2,3,mat::MatrixOrdering::ColMajor> mat(arr);
+  mat::Matrix<int,2,3,mat::MatrixOrdering::RowMajor> mat2(arr);
+
+  mat::Matrix<int,2,3,mat::MatrixOrdering::ColMajor> mat3 = mat+mat2;
+
+  EXPECT_EQ(2,mat3(0,0));
+  EXPECT_EQ(5,mat3(0,1));
+  EXPECT_EQ(8,mat3(0,2));
+  EXPECT_EQ(6,mat3(1,0));
+  EXPECT_EQ(9,mat3(1,1));
+  EXPECT_EQ(12,mat3(1,2));
+  EXPECT_TRUE(mat3.Order==mat::MatrixOrdering::ColMajor);
+}
+
 
 TEST(substractionInPlace,oneElement){
   int arr[1] = {5};
@@ -184,6 +291,39 @@ TEST(substractionInPlace,ManyElementsRowMajor){
   EXPECT_EQ(-20,mat(1,1));
 }
 
+TEST(substractionInPlace,manyElementsSameMatrixDifferentOrderRowMajor){
+  int arr[6] = {1,2,3,4,5,6};
+
+  mat::Matrix<int,2,3,mat::MatrixOrdering::RowMajor> mat(arr);
+  mat::Matrix<int,2,3,mat::MatrixOrdering::ColMajor> mat2(arr);
+
+  mat -= mat2;
+
+  EXPECT_EQ(0,mat(0,0));
+  EXPECT_EQ(-1,mat(0,1));
+  EXPECT_EQ(-2,mat(0,2));
+  EXPECT_EQ(2,mat(1,0));
+  EXPECT_EQ(1,mat(1,1));
+  EXPECT_EQ(0,mat(1,2));
+  EXPECT_TRUE(mat.Order==mat::MatrixOrdering::RowMajor);
+}
+
+TEST(substractionInPlace,manyElementsSameMatrixDifferentOrderColMajor){
+  int arr[6] = {1,2,3,4,5,6};
+
+  mat::Matrix<int,2,3,mat::MatrixOrdering::ColMajor> mat(arr);
+  mat::Matrix<int,2,3,mat::MatrixOrdering::RowMajor> mat2(arr);
+
+  mat -= mat2;
+
+  EXPECT_EQ(0,mat(0,0));
+  EXPECT_EQ(1,mat(0,1));
+  EXPECT_EQ(2,mat(0,2));
+  EXPECT_EQ(-2,mat(1,0));
+  EXPECT_EQ(-1,mat(1,1));
+  EXPECT_EQ(0,mat(1,2));
+  EXPECT_TRUE(mat.Order==mat::MatrixOrdering::ColMajor);
+}
 
 TEST(substraction,oneElement){
   int arr[1] = {5};
@@ -212,6 +352,59 @@ TEST(substraction,ManyElementsRowMajor){
   EXPECT_EQ(-10,mat3(0,1));
   EXPECT_EQ(-15,mat3(1,0));
   EXPECT_EQ(-20,mat3(1,1));
+  EXPECT_TRUE(mat3.Order==mat::MatrixOrdering::RowMajor);
+}
+
+TEST(substraction,ManyElementsColMajor){
+  int arr[4] = {5,10,15,20};
+  int arr2[4] = {10,20,30,40};
+
+  mat::Matrix<int,2,2,mat::MatrixOrdering::ColMajor> mat(arr);
+  mat::Matrix<int,2,2,mat::MatrixOrdering::ColMajor> mat2(arr2);
+
+  mat::Matrix<int,2,2,mat::MatrixOrdering::ColMajor> mat3;
+  mat3 = mat-mat2;
+
+  EXPECT_EQ(-5,mat3(0,0));
+  EXPECT_EQ(-15,mat3(0,1));
+  EXPECT_EQ(-10,mat3(1,0));
+  EXPECT_EQ(-20,mat3(1,1));
+}
+
+TEST(substraction,manyElementsSameMatrixDifferentOrderRowMajor){
+  int arr[6] = {1,2,3,4,5,6};
+
+  mat::Matrix<int,2,3,mat::MatrixOrdering::RowMajor> mat(arr);
+  mat::Matrix<int,2,3,mat::MatrixOrdering::ColMajor> mat2(arr);
+
+  mat::Matrix<int,2,3> mat3;
+  mat3 = mat-mat2;
+  
+  EXPECT_EQ(0,mat3(0,0));
+  EXPECT_EQ(-1,mat3(0,1));
+  EXPECT_EQ(-2,mat3(0,2));
+  EXPECT_EQ(2,mat3(1,0));
+  EXPECT_EQ(1,mat3(1,1));
+  EXPECT_EQ(0,mat3(1,2));
+  EXPECT_TRUE(mat3.Order==mat::MatrixOrdering::RowMajor);
+}
+
+TEST(substraction,manyElementsSameMatrixDifferentOrderColMajor){
+  int arr[6] = {1,2,3,4,5,6};
+
+  mat::Matrix<int,2,3,mat::MatrixOrdering::ColMajor> mat(arr);
+  mat::Matrix<int,2,3,mat::MatrixOrdering::RowMajor> mat2(arr);
+
+  mat::Matrix<int,2,3,mat::MatrixOrdering::ColMajor> mat3;
+  mat3 = mat-mat2;
+
+  EXPECT_EQ(0,mat3(0,0));
+  EXPECT_EQ(1,mat3(0,1));
+  EXPECT_EQ(2,mat3(0,2));
+  EXPECT_EQ(-2,mat3(1,0));
+  EXPECT_EQ(-1,mat3(1,1));
+  EXPECT_EQ(0,mat3(1,2));
+  EXPECT_TRUE(mat3.Order==mat::MatrixOrdering::ColMajor);
 }
 
 TEST(productInPlace,squaredMatrix){
@@ -219,7 +412,6 @@ TEST(productInPlace,squaredMatrix){
 
   mat::Matrix<int,2,2> mat(arr);
   mat::Matrix<int,2,2> mat2(arr);
-  mat::Matrix<int,2,2> mat3;
 
   mat *= mat2;
 
@@ -228,6 +420,24 @@ TEST(productInPlace,squaredMatrix){
   EXPECT_EQ(15,mat(1,0));
   EXPECT_EQ(22,mat(1,1));
 }
+
+TEST(productInPlace,manyElementsSameMatrixDifferentOrderColMajor){
+  int arr[6] = {1,2,3,4,5,6};
+
+  mat::Matrix<int,2,3,mat::MatrixOrdering::ColMajor> mat(arr);
+  mat::Matrix<int,2,3,mat::MatrixOrdering::RowMajor> mat2(arr);
+
+  mat::Matrix<int,2,3,mat::MatrixOrdering::ColMajor> mat3 = mat+mat2;
+
+  EXPECT_EQ(2,mat3(0,0));
+  EXPECT_EQ(5,mat3(0,1));
+  EXPECT_EQ(8,mat3(0,2));
+  EXPECT_EQ(6,mat3(1,0));
+  EXPECT_EQ(9,mat3(1,1));
+  EXPECT_EQ(12,mat3(1,2));
+  EXPECT_TRUE(mat3.Order==mat::MatrixOrdering::ColMajor);
+}
+
 
 TEST(product,manyElementsRowMajor){
   int arr[6] = {1,2,3,4,5,6};
@@ -306,6 +516,38 @@ TEST(transpose,simpleColMajor){
   EXPECT_EQ(6,mat2(2,1));
 }
 
+TEST(transpose,differentOrderRowMajorToColMajor){
+  int arr[6] = {1,2,3,4,5,6};
+  mat::Matrix<int,2,3,mat::MatrixOrdering::RowMajor> mat(arr);
+  mat::Matrix<int,3,2,mat::MatrixOrdering::ColMajor> mat2;
+
+  mat2 = mat.transpose();
+
+  EXPECT_EQ(1,mat2(0,0));
+  EXPECT_EQ(4,mat2(0,1));
+  EXPECT_EQ(2,mat2(1,0));
+  EXPECT_EQ(5,mat2(1,1));
+  EXPECT_EQ(3,mat2(2,0));
+  EXPECT_EQ(6,mat2(2,1));
+  EXPECT_TRUE(mat2.Order==mat::MatrixOrdering::ColMajor);
+}
+
+TEST(transpose,differentOrderColMajorToRowMajor){
+  int arr[6] = {1,2,3,4,5,6};
+  mat::Matrix<int,2,3,mat::MatrixOrdering::ColMajor> mat(arr);
+  mat::Matrix<int,3,2,mat::MatrixOrdering::RowMajor> mat2;
+
+  mat2 = mat.transpose();
+
+  EXPECT_EQ(1,mat2(0,0));
+  EXPECT_EQ(2,mat2(0,1));
+  EXPECT_EQ(3,mat2(1,0));
+  EXPECT_EQ(4,mat2(1,1));
+  EXPECT_EQ(5,mat2(2,0));
+  EXPECT_EQ(6,mat2(2,1));
+  EXPECT_TRUE(mat2.Order==mat::MatrixOrdering::RowMajor);
+}
+
 
 /*
   Comparison operators
@@ -335,11 +577,20 @@ TEST(getValue,simpleColMajor){
   EXPECT_EQ(6,mat(1,2));
 }
 
-TEST(egality,oneElement){
+TEST(egality,oneElementRowMajor){
   int arr[1] = {5};
 
   mat::Matrix<int,1,1> mat(arr);
   mat::Matrix<int,1,1> mat2(arr);
+
+  EXPECT_TRUE(mat==mat2);
+}
+
+TEST(egality,oneElementColMajor){
+  int arr[1] = {5};
+
+  mat::Matrix<int,1,1,mat::MatrixOrdering::ColMajor> mat(arr);
+  mat::Matrix<int,1,1,mat::MatrixOrdering::ColMajor> mat2(arr);
 
   EXPECT_TRUE(mat==mat2);
 }
@@ -360,16 +611,32 @@ TEST(egality,manyElementsColMajor){
   EXPECT_TRUE(mat==mat2);
 }
 
-// TEST(egality,manyElementsSameMatrixDifferentOrder){
+TEST(egality,manyElementsSameMatrixDifferentOrder){
+  int arr[6] = {1,2,3,4,5,6};
+  int arr2[6] = {1,4,2,5,3,6};
 
-// }
+  mat::Matrix<int,2,3,mat::MatrixOrdering::RowMajor> mat(arr);
+  mat::Matrix<int,2,3,mat::MatrixOrdering::ColMajor> mat2(arr2);
 
-TEST(difference,oneElement){
+  EXPECT_TRUE(mat==mat2);
+}
+
+TEST(difference,oneElementRowMajor){
   int arr[1] = {5};
   int arr2[1] = {42};
 
   mat::Matrix<int,1,1> mat(arr);
   mat::Matrix<int,1,1> mat2(arr2);
+
+  EXPECT_TRUE(mat!=mat2);
+}
+
+TEST(difference,oneElementColMajor){
+  int arr[1] = {5};
+  int arr2[1] = {42};
+
+  mat::Matrix<int,1,1,mat::MatrixOrdering::ColMajor> mat(arr);
+  mat::Matrix<int,1,1,mat::MatrixOrdering::ColMajor> mat2(arr2);
 
   EXPECT_TRUE(mat!=mat2);
 }
@@ -392,9 +659,14 @@ TEST(difference,manyElementsColMajor){
   EXPECT_TRUE(mat!=mat2);
 }
 
-// TEST(difference,manyElementsSameMatrixDifferentOrder){
+TEST(difference,manyElementsSameMatrixDifferentOrder){
+  int arr[6] = {1,2,3,4,5,6};
 
-// }
+  mat::Matrix<int,2,3,mat::MatrixOrdering::RowMajor> mat(arr);
+  mat::Matrix<int,2,3,mat::MatrixOrdering::ColMajor> mat2(arr);
+
+  EXPECT_TRUE(mat!=mat2);
+}
 
 
 

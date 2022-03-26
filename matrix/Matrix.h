@@ -42,7 +42,7 @@ namespace mat {
       }
     }
 
-    // Conversion constructor
+    //Conversion constructor
     // constexpr Matrix(const Matrix<Type, Rows, Cols, Order>& other) {
     //   int k = 0;
     //   if(Order != this.Order){
@@ -61,8 +61,24 @@ namespace mat {
 
 
     // Affectation from a matrix with different ordering
-    // constexpr auto& operator=(const Matrix<Type, Rows, Cols, Order>& other) {
-    // }
+    template<MatrixOrdering otherOrder>
+    constexpr auto& operator=(const Matrix<Type, Rows, Cols, otherOrder>& other) {
+      if(Order==MatrixOrdering::RowMajor){
+        for(size_t i = 0; i<Rows; i++){
+          for(size_t j = 0; j<Cols; j++){
+            (*this)(i,j) = other(i,j);
+          }
+        }
+      }
+      else{
+        for(size_t i = 0; i<Cols; i++){
+          for(size_t j = 0; j<Rows; j++){
+            (*this)(j,i) = other(j,i);
+          }
+        }
+      }
+      return *this;
+    }
 
     // // Return the transposed matrix
     constexpr Matrix<Type, Cols, Rows, Order> transpose() {
@@ -248,17 +264,17 @@ namespace mat {
 //     }
 // }; 
 
-  // template<typename Type, int Cols>
-  // constexpr VecR<Type, Cols> vecRow(const Type(&data)[Cols]) {
-  // }
+//   template<typename Type, int Cols>
+//   constexpr VecR<Type, Cols> vecRow(const Type(&data)[Cols]) {
+//   }
 
-  // template<typename Type, int Rows>
-  // constexpr VecC<Type, Rows> vecCol(const Type(&data)[Rows]) {
+//   template<typename Type, int Rows>
+//   constexpr VecC<Type, Rows> vecCol(const Type(&data)[Rows]) {
     
-  //   for(size_t i = 0 ; i < Rows ;i++){
-  //     vecCol->m_container[i] = data[i];
-  //   }    
-  // }
+//     for(size_t i = 0 ; i < Rows ;i++){
+//       vecCol->m_container[i] = data[i];
+//     }    
+//   }
 
 
 
@@ -297,8 +313,6 @@ namespace mat {
 
 
     // return s;
-
-    
 
   }
   
